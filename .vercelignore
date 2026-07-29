@@ -1,0 +1,6 @@
+.next
+dist
+.vinext
+.wrangler
+coverage
+*.log
