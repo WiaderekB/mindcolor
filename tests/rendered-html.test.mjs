@@ -14,7 +14,27 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /Doświadcz/);
   assert.match(source, /mindcolor PRO/);
   assert.match(source, /kontakt@mindcolor\.pl/);
+  assert.match(source, /Pięć spokojnych powrotów/);
+  assert.match(source, /W programie planujemy/);
+  assert.match(source, /katarzyna-gawin-lelonek\.jpg/);
+  assert.match(source, /krystyna-swiderska-bem\.jpg/);
+  assert.match(source, /mindcolor-karty-bransoletki-v2\.jpg/);
+  assert.match(source, /mindcolor-boxy-v2\.jpg/);
+  assert.doesNotMatch(source, /Materiał w przygotowaniu/);
+  assert.doesNotMatch(source, /Po ukończeniu programu otrzymasz/);
   assert.doesNotMatch(source, /chatgpt|oai-authenticated|vinext/i);
+});
+
+test("builds a complete contact email from the form", async () => {
+  const source = await readFile(
+    new URL("../app/contact-form.tsx", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(source, /event\.preventDefault\(\)/);
+  assert.match(source, /encodeURIComponent\(subject\)/);
+  assert.match(source, /encodeURIComponent\(body\)/);
+  assert.match(source, /mailto:kontakt@mindcolor\.pl/);
 });
 
 test("uses the standard Next.js lifecycle", async () => {

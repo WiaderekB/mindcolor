@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import ContactForm from "./contact-form";
 
 export const metadata: Metadata = {
 	title: "mindcolor® - kompetencje mentalne poprzez doświadczenie",
@@ -110,6 +112,41 @@ const offers = [
 	},
 ];
 
+const practices = [
+	{
+		color: "blue",
+		meta: "Koncentracja / 1 minuta",
+		title: "Pięć spokojnych powrotów",
+		lead: "Na moment przed nauką, treningiem albo zadaniem, które wymaga pełnej uwagi.",
+		instruction: "Wybierz jeden punkt przed sobą. Przez pięć spokojnych oddechów wracaj do niego wzrokiem za każdym razem, gdy uwaga odpłynie.",
+		question: "Na koniec zapytaj: co najbardziej pomogło Ci wrócić?",
+	},
+	{
+		color: "green",
+		meta: "Spokój / 1 minuta",
+		title: "Napnij i odpuść",
+		lead: "Prosty sposób, by najpierw zauważyć napięcie, a dopiero potem o nim rozmawiać.",
+		instruction: "Zaciśnij dłonie na trzy sekundy, a potem powoli je rozluźnij. Powtórz trzy razy i zauważ różnicę w ciele.",
+		question: "Na koniec zapytaj: gdzie teraz jest choć odrobinę lżej?",
+	},
+	{
+		color: "yellow",
+		meta: "Kreatywność / 2 minuty",
+		title: "Trzy inne drogi",
+		lead: "Kiedy pierwszy pomysł nie działa albo pojawia się blokada.",
+		instruction: "Wybierz zwykły przedmiot i wymyśl dla niego trzy zupełnie nowe zastosowania. Nie oceniaj pomysłów w trakcie.",
+		question: "Na koniec zapytaj: który pomysł najbardziej Cię zaskoczył?",
+	},
+	{
+		color: "red",
+		meta: "Energia / 1 minuta",
+		title: "Pierwszy mały krok",
+		lead: "Kiedy trudno zacząć, choć wiadomo już, co jest do zrobienia.",
+		instruction: "Przez dziesięć sekund poruszaj całym ciałem, zatrzymaj się i nazwij najmniejszy możliwy krok, który możesz zrobić teraz.",
+		question: "Nie planuj całości. Zrób tylko ten jeden krok.",
+	},
+];
+
 function Logo() {
 	return (
 		<span className="wordmark" aria-label="mindcolor">
@@ -188,7 +225,7 @@ export default function Home() {
 
 					<div className="hero-visual">
 						<div className="hero-frame">
-							<img src="/images/mindcolor-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width="1536" height="2048" />
+							<Image src="/images/mindcolor-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width={1536} height={2048} priority />
 						</div>
 						<div className="hero-note">
 							<span className="hero-note-number">4</span>
@@ -216,7 +253,7 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="system section-shell section-spacing" id="metoda">
+				<section className="system section-shell section-spacing reveal-section" id="metoda">
 					<div className="section-intro">
 						<p className="eyebrow">Czym jest mindcolor®?</p>
 						<h2>To nie są tylko karty. To kompletny system.</h2>
@@ -244,13 +281,20 @@ export default function Home() {
 							</div>
 						</div>
 						<figure className="system-figure">
-							<img src="/images/mindcolor-karty-bransoletki.jpg" alt="Karty mindcolor i bransoletki w czterech kolorach" width="2048" height="1365" />
+							<div className="system-image-frame">
+								<Image
+									src="/images/mindcolor-karty-bransoletki-v2.jpg"
+									alt="Wizualizacja kart i bransoletek mindcolor w czterech kolorach"
+									fill
+									sizes="(max-width: 860px) calc(100vw - 40px), 52vw"
+								/>
+							</div>
 							<figcaption>Narzędzia są początkiem doświadczenia - nie jego celem.</figcaption>
 						</figure>
 					</div>
 				</section>
 
-				<section className="states-section section-spacing" id="stany">
+				<section className="states-section section-spacing reveal-section" id="stany">
 					<div className="section-shell">
 						<div className="section-intro section-intro-split">
 							<div>
@@ -264,7 +308,7 @@ export default function Home() {
 						</div>
 						<div className="states-grid">
 							{states.map((state) => (
-								<article className={`state-card state-${state.color}`} key={state.name}>
+								<article className={`state-card state-${state.color} reveal-item`} key={state.name}>
 									<div className="state-card-top">
 										<span className="state-symbol" aria-hidden="true">
 											{state.symbol}
@@ -284,14 +328,14 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="process-section section-shell section-spacing" id="jak-dziala">
+				<section className="process-section section-shell section-spacing reveal-section" id="jak-dziala">
 					<div className="section-intro centered-intro">
 						<p className="eyebrow">Jak działa mindcolor®?</p>
 						<h2>Cztery kroki. Jedno doświadczenie, które zostaje na dłużej.</h2>
 					</div>
 					<div className="process-grid">
 						{process.map((step) => (
-							<article className="process-card" key={step.number}>
+							<article className="process-card reveal-item" key={step.number}>
 								<div className="process-meta">
 									<span>{step.number}</span>
 									<span className="process-symbol" aria-hidden="true">
@@ -316,14 +360,14 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="audiences section-spacing">
+				<section className="audiences section-spacing reveal-section">
 					<div className="section-shell">
 						<div className="section-intro">
 							<p className="eyebrow">Jedna metoda, różne perspektywy</p>
 							<h2>Zobacz, co mindcolor® wnosi do Twojej codzienności.</h2>
 						</div>
 						<div className="audience-grid">
-							<article>
+							<article className="reveal-item">
 								<span className="audience-index">01 / Rodzic</span>
 								<h3>Mniej poleceń. Więcej rozmowy i wspólnego języka.</h3>
 								<ul>
@@ -335,7 +379,7 @@ export default function Home() {
 									Porozmawiaj z nami <ArrowIcon />
 								</a>
 							</article>
-							<article>
+							<article className="reveal-item">
 								<span className="audience-index">02 / Trener</span>
 								<h3>Trening mentalny, który można połączyć z ruchem.</h3>
 								<ul>
@@ -347,13 +391,13 @@ export default function Home() {
 									Poznaj mindcolor PRO <ArrowIcon />
 								</a>
 							</article>
-							<article>
+							<article className="reveal-item">
 								<span className="audience-index">03 / Specjalista</span>
 								<h3>Konkretny proces zamiast kolejnej teczki materiałów.</h3>
 								<ul>
-									<li>scenariusze, pytania i narzędzia do pracy;</li>
+									<li>scenariusze, pytania i narzędzia rozwijane do pracy;</li>
 									<li>model prowadzenia uczestnika przez doświadczenie;</li>
-									<li>społeczność, aktualizacje i licencja metody.</li>
+									<li>planowany program wdrożeniowy i społeczność praktyków.</li>
 								</ul>
 								<a href="#pro">
 									Dołącz do listy zainteresowanych <ArrowIcon />
@@ -363,12 +407,12 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="manifest section-spacing">
+				<section className="manifest section-spacing reveal-section">
 					<div className="manifest-inner section-shell">
 						<p className="eyebrow eyebrow-light">W co wierzymy</p>
 						<div className="manifest-lines">
-							<p>Mental zaczyna się w domu.</p>
-							<p>Rodzic jest pierwszym trenerem mentalnym dziecka.</p>
+							<p>Kompetencje mentalne zaczynają się w domu.</p>
+							<p>Intuicja rodzica ma ogromną wartość.</p>
 							<p>Trener inspiruje bardziej, niż motywuje.</p>
 							<p>Doświadczenie zostaje dłużej niż instrukcja.</p>
 						</div>
@@ -379,7 +423,7 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="offer-section section-shell section-spacing" id="oferta">
+				<section className="offer-section section-shell section-spacing reveal-section" id="oferta">
 					<div className="section-intro section-intro-split">
 						<div>
 							<p className="eyebrow">Oferta</p>
@@ -389,7 +433,7 @@ export default function Home() {
 					</div>
 					<div className="offer-list">
 						{offers.map((offer) => (
-							<details className="offer-item" key={offer.number}>
+							<details className="offer-item reveal-item" key={offer.number}>
 								<summary>
 									<span className="offer-number">{offer.number}</span>
 									<span className="offer-title-wrap">
@@ -412,7 +456,7 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="pro-section section-shell section-spacing" id="pro">
+				<section className="pro-section section-shell section-spacing reveal-section" id="pro">
 					<div className="pro-card">
 						<div className="pro-heading">
 							<span className="status-badge">Już wkrótce</span>
@@ -420,13 +464,13 @@ export default function Home() {
 							<h2>
 								mindcolor <span>PRO</span>
 							</h2>
-							<p className="pro-lead">Kompletny system prowadzenia zajęć dla trenerów, psychologów, pedagogów, wychowawców i nauczycieli.</p>
+							<p className="pro-lead">Rozwijany program prowadzenia zajęć dla trenerów, psychologów, pedagogów, wychowawców i nauczycieli.</p>
 							<a className="button button-light" href="#kontakt">
-								Dołącz do listy zainteresowanych <ArrowIcon />
+								Chcę otrzymać informacje o starcie <ArrowIcon />
 							</a>
 						</div>
 						<div className="pro-benefits">
-							<p className="pro-benefits-title">Po ukończeniu programu otrzymasz:</p>
+							<p className="pro-benefits-title">W programie planujemy:</p>
 							<ul>
 								<li>
 									<span>01</span> gotowy model i strukturę zajęć;
@@ -435,7 +479,7 @@ export default function Home() {
 									<span>02</span> scenariusze, ćwiczenia i zestawy narzędzi;
 								</li>
 								<li>
-									<span>03</span> certyfikację i licencję na pracę metodą;
+									<span>03</span> ścieżkę certyfikacji i licencję na pracę metodą;
 								</li>
 								<li>
 									<span>04</span> materiały do druku, książkę i inspiracje;
@@ -448,10 +492,15 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="tools-section section-spacing">
+				<section className="tools-section section-spacing reveal-section">
 					<div className="section-shell tools-grid">
 						<figure className="tools-image">
-							<img src="/images/mindcolor-boxy.jpg" alt="Cztery pudełka mindcolor odpowiadające czterem stanom mentalnym" width="1536" height="1024" />
+							<Image
+								src="/images/mindcolor-boxy-v2.jpg"
+								alt="Wizualizacja czterech zestawów mindcolor odpowiadających czterem stanom mentalnym"
+								fill
+								sizes="(max-width: 860px) calc(100vw - 40px), 56vw"
+							/>
 						</figure>
 						<div className="tools-copy">
 							<p className="eyebrow">Narzędzia mindcolor®</p>
@@ -471,76 +520,89 @@ export default function Home() {
 					</div>
 				</section>
 
-				<section className="inspiration section-shell section-spacing" id="inspiracje">
+				<section className="inspiration section-shell section-spacing reveal-section" id="inspiracje">
 					<div className="section-intro section-intro-split">
 						<div>
 							<p className="eyebrow">Inspiracje</p>
 							<h2>Małe doświadczenia do prawdziwego życia.</h2>
 						</div>
-						<p>Powstaje biblioteka krótkich ćwiczeń, pytań i pomysłów dla rodziców, trenerów oraz specjalistów.</p>
+						<p>Nie czekaj na specjalną okazję. Otwórz wybrany kolor i wypróbuj małe doświadczenie tu i teraz.</p>
 					</div>
 					<div className="inspiration-grid">
-						<article className="inspiration-card inspiration-blue">
-							<span>Koncentracja / 2 min</span>
-							<h3>Jedna rzecz na raz</h3>
-							<p>Krótkie ćwiczenie, które pomaga zebrać uwagę przed nauką, treningiem lub startem.</p>
-							<small>Materiał w przygotowaniu</small>
-						</article>
-						<article className="inspiration-card inspiration-green">
-							<span>Spokój / rozmowa</span>
-							<h3>Co mówi ciało?</h3>
-							<p>Pytania, które pomagają zauważyć napięcie i wrócić do równowagi bez oceniania.</p>
-							<small>Materiał w przygotowaniu</small>
-						</article>
-						<article className="inspiration-card inspiration-yellow">
-							<span>Kreatywność / zabawa</span>
-							<h3>Trzy inne drogi</h3>
-							<p>Zabawa w szukanie nowych rozwiązań, kiedy pierwsze nie działa albo pojawia się blokada.</p>
-							<small>Materiał w przygotowaniu</small>
-						</article>
+						{practices.map((practice) => (
+							<details className={`inspiration-card inspiration-${practice.color} reveal-item`} key={practice.color}>
+								<summary>
+									<span>{practice.meta}</span>
+									<h3>{practice.title}</h3>
+									<p>{practice.lead}</p>
+									<span className="inspiration-toggle" aria-hidden="true">
+										+
+									</span>
+									<small>Otwórz ćwiczenie</small>
+								</summary>
+								<div className="inspiration-details">
+									<p>{practice.instruction}</p>
+									<strong>{practice.question}</strong>
+								</div>
+							</details>
+						))}
 					</div>
 				</section>
 
-				<section className="about section-spacing" id="o-nas">
+				<section className="about section-spacing reveal-section" id="o-nas">
 					<div className="section-shell about-grid">
 						<div className="about-copy">
 							<p className="eyebrow">O nas</p>
-							<h2>Jesteśmy mamami i praktyczkami. Zaczęłyśmy od tego, czego brakowało nam w codzienności.</h2>
+							<h2>Powstało z praktyki - nie z teorii zamkniętej w podręczniku.</h2>
 							<p className="large-copy">
-								Od lat pracujemy z dziećmi i młodzieżą - w sporcie, edukacji i rozwoju. Wiemy, że trening mentalny nie zaczyna się na boisku. Zaczyna się w
-								relacji.
+								Pomysł zaczął się od obserwacji dzieci i rozmów z rodzicami. Pierwsze ćwiczenia testowałyśmy w małych grupach, na warsztatach i zajęciach ruchowych.
 							</p>
 							<p>
 								Stworzyłyśmy mindcolor®, bo samo „skup się”, „uspokój się” czy „uwierz w siebie” nie wystarcza. Dziecko potrzebuje przestrzeni, by dany stan
 								naprawdę poczuć i nauczyć się do niego wracać.
 							</p>
-							<div className="founders">
-								<div>
-									<strong>Katarzyna Gawin-Lelonek</strong>
-									<span>pedagożka, trenerka mentalna w sporcie</span>
-								</div>
-								<div>
-									<strong>Krystyna Świderska-Bem</strong>
-									<span>trenerka mentalna w sporcie</span>
-								</div>
-							</div>
 							<a className="text-link" href="https://zycieregionu.com.pl/2026/06/01/mindcolor-ster-emocji/" target="_blank" rel="noreferrer">
 								Poznaj historię mindcolor® <ArrowIcon />
 							</a>
 						</div>
-						<figure className="about-image">
-							<img
-								src="/images/tworczynie-mindcolor.jpg"
-								alt="Katarzyna Gawin-Lelonek i Krystyna Świderska-Bem, twórczynie mindcolor"
-								width="1079"
-								height="1079"
-							/>
-							<figcaption>Kasia i Krysia - twórczynie systemu mindcolor®</figcaption>
-						</figure>
+						<div className="founder-portraits" aria-label="Twórczynie mindcolor">
+							<figure className="founder-card reveal-item">
+								<div className="founder-photo founder-photo-blue">
+									<Image
+										src="/images/katarzyna-gawin-lelonek.jpg"
+										alt="Katarzyna Gawin-Lelonek"
+										width={560}
+										height={560}
+										sizes="(max-width: 620px) 72vw, 260px"
+										style={{ width: "100%", height: "auto" }}
+									/>
+								</div>
+								<figcaption>
+									<strong>Katarzyna Gawin-Lelonek</strong>
+									<span>trenerka mentalna w sporcie, pedagożka, konsultantka odporności psychicznej</span>
+								</figcaption>
+							</figure>
+							<figure className="founder-card founder-card-offset reveal-item">
+								<div className="founder-photo founder-photo-red">
+									<Image
+										src="/images/krystyna-swiderska-bem.jpg"
+										alt="Krystyna Świderska-Bem"
+										width={620}
+										height={620}
+										sizes="(max-width: 620px) 72vw, 260px"
+										style={{ width: "100%", height: "auto" }}
+									/>
+								</div>
+								<figcaption>
+									<strong>Krystyna Świderska-Bem</strong>
+									<span>trenerka mentalna w sporcie</span>
+								</figcaption>
+							</figure>
+						</div>
 					</div>
 				</section>
 
-				<section className="contact section-spacing" id="kontakt">
+				<section className="contact section-spacing reveal-section" id="kontakt">
 					<div className="section-shell contact-grid">
 						<div className="contact-copy">
 							<p className="eyebrow eyebrow-light">Kontakt</p>
@@ -551,39 +613,7 @@ export default function Home() {
 								<a href="mailto:kontakt@mindcolor.pl">kontakt@mindcolor.pl</a>
 							</div>
 						</div>
-						<form className="contact-form" action="mailto:kontakt@mindcolor.pl" method="post" encType="text/plain">
-							<label>
-								<span>Imię</span>
-								<input type="text" name="Imię" autoComplete="name" required />
-							</label>
-							<label>
-								<span>E-mail</span>
-								<input type="email" name="E-mail" autoComplete="email" required />
-							</label>
-							<label>
-								<span>Temat</span>
-								<select name="Temat" defaultValue="">
-									<option value="" disabled>
-										Wybierz temat
-									</option>
-									<option>Warsztaty</option>
-									<option>Strefa mindcolor®</option>
-									<option>Konsultacje</option>
-									<option>Wystąpienie</option>
-									<option>Szkolenie</option>
-									<option>mindcolor PRO</option>
-									<option>Inny temat</option>
-								</select>
-							</label>
-							<label>
-								<span>Wiadomość</span>
-								<textarea name="Wiadomość" rows={4} required />
-							</label>
-							<button className="button button-light" type="submit">
-								Przygotuj wiadomość <ArrowIcon />
-							</button>
-							<small>Po kliknięciu otworzy się Twoja aplikacja pocztowa z gotową wiadomością.</small>
-						</form>
+						<ContactForm />
 					</div>
 				</section>
 
@@ -614,8 +644,8 @@ export default function Home() {
 						<a href="#kontakt">Kontakt</a>
 					</div>
 					<div className="footer-status">
-						<span>Instagram</span>
-						<small>link profilu zostanie dodany przed premierą</small>
+						<span>Warsztaty • Strefy • Konsultacje</span>
+						<small>Dla rodzin, szkół, klubów i wydarzeń</small>
 					</div>
 				</div>
 				<div className="section-shell footer-bottom">
