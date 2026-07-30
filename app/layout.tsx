@@ -2,8 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (productionHost ? `https://${productionHost}` : "http://localhost:3000");
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://mindcolor.wiaderek.cloud";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -12,6 +11,9 @@ export const metadata: Metadata = {
 		template: "%s | mindcolor®",
 	},
 	description: "Praktyczny system rozwijania koncentracji, spokoju, kreatywności i energii u dzieci i młodzieży.",
+	alternates: {
+		canonical: "/",
+	},
 	icons: {
 		icon: "/images/mindcolor-logo.jpg",
 		shortcut: "/images/mindcolor-logo.jpg",
@@ -20,6 +22,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		locale: "pl_PL",
+		url: "/",
 		title: "mindcolor® - rozwój, którego można doświadczyć",
 		description: "Cztery stany mentalne. Prosty język. Praktyczne narzędzia dla dzieci, rodziców, trenerów i specjalistów.",
 		images: [

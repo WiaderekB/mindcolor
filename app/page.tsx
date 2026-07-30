@@ -1,17 +1,53 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import ContactForm from "./contact-form";
+"use client";
 
-export const metadata: Metadata = {
-	title: "mindcolor® - kompetencje mentalne poprzez doświadczenie",
-	description: "mindcolor® to praktyczny system rozwijania koncentracji, spokoju, kreatywności i energii u dzieci i młodzieży.",
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { useRef, useState, type ReactNode } from "react";
+import ContactForm from "./contact-form";
+import {
+	AnchorIcon,
+	ArrowDownIcon,
+	ArrowUpRightIcon,
+	CalmIcon,
+	CloseIcon,
+	EnergyIcon,
+	FocusIcon,
+	MenuIcon,
+	NameIcon,
+	PlusIcon,
+	RecognizeIcon,
+	SparkIcon,
+} from "./icons";
+
+const easeOut = [0.22, 1, 0.36, 1] as const;
+const revealVariants = {
+	hidden: { opacity: 0, y: 44, filter: "blur(8px)" },
+	visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+};
+
+const cardVariants = {
+	hidden: { opacity: 0, y: 28 },
+	visible: { opacity: 1, y: 0 },
+};
+const heroContainerVariants = {
+	hidden: {},
+	visible: {
+		transition: {
+			delayChildren: 0.1,
+			staggerChildren: 0.11,
+		},
+	},
+};
+const heroItemVariants = {
+	hidden: { opacity: 0, y: 24 },
+	visible: { opacity: 1, y: 0, transition: { duration: 0.72, ease: easeOut } },
 };
 
 const states = [
 	{
 		name: "Koncentracja",
 		color: "blue",
-		symbol: "◎",
+		icon: "focus",
 		definition: "Skupiam się",
 		description: "Uwaga kieruje się na to, co w tej chwili naprawdę ważne. Jedno zadanie, jeden krok, świadoma obecność.",
 		cues: ["fokus", "uważność", "planowanie"],
@@ -19,7 +55,7 @@ const states = [
 	{
 		name: "Spokój",
 		color: "green",
-		symbol: "∿",
+		icon: "calm",
 		definition: "Reguluję",
 		description: "Napięcie opada, oddech zwalnia, a dziecko odzyskuje równowagę i kontakt ze sobą.",
 		cues: ["oddech", "równowaga", "powrót do siebie"],
@@ -27,7 +63,7 @@ const states = [
 	{
 		name: "Kreatywność",
 		color: "yellow",
-		symbol: "✦",
+		icon: "spark",
 		definition: "Szukam rozwiązań",
 		description: "Pojawia się ciekawość, elastyczność i gotowość, by spróbować inaczej - bez lęku przed błędem.",
 		cues: ["pomysły", "lekkość", "nowe możliwości"],
@@ -35,7 +71,7 @@ const states = [
 	{
 		name: "Energia",
 		color: "red",
-		symbol: "↗",
+		icon: "energy",
 		definition: "Działam",
 		description: "Ciało i myśli są gotowe do ruchu. To odwaga, zaangażowanie i decyzja, by zrobić pierwszy krok.",
 		cues: ["odwaga", "motywacja", "wytrwałość"],
@@ -46,25 +82,25 @@ const process = [
 	{
 		number: "01",
 		name: "Rozpoznaj",
-		symbol: "◉",
+		icon: "recognize",
 		text: "Zatrzymaj się i sprawdź, czego potrzebujesz w tej chwili.",
 	},
 	{
 		number: "02",
 		name: "Doświadcz",
-		symbol: "✦",
+		icon: "experience",
 		text: "Wejdź w wybrany stan przez ruch, ćwiczenie, pytanie lub zabawę.",
 	},
 	{
 		number: "03",
 		name: "Nazwij",
-		symbol: "“”",
+		icon: "name",
 		text: "Zauważ i opowiedz, co wydarzyło się w ciele, emocjach i myślach.",
 	},
 	{
 		number: "04",
 		name: "Zakotwicz",
-		symbol: "⌁",
+		icon: "anchor",
 		text: "Połącz doświadczenie z kolorem, aby łatwiej do niego wrócić.",
 	},
 ];
@@ -162,17 +198,92 @@ function Logo() {
 }
 
 function ArrowIcon() {
-	return <span aria-hidden="true">↗</span>;
+	return <ArrowUpRightIcon className="inline-icon" />;
+}
+
+function StateGlyph({ name }: { name: string }) {
+	const props = { className: "state-icon-svg" };
+
+	switch (name) {
+		case "calm":
+			return <CalmIcon {...props} />;
+		case "spark":
+			return <SparkIcon {...props} />;
+		case "energy":
+			return <EnergyIcon {...props} />;
+		default:
+			return <FocusIcon {...props} />;
+	}
+}
+
+function ProcessGlyph({ name }: { name: string }) {
+	const props = { className: "process-icon-svg" };
+
+	switch (name) {
+		case "experience":
+			return <SparkIcon {...props} />;
+		case "name":
+			return <NameIcon {...props} />;
+		case "anchor":
+			return <AnchorIcon {...props} />;
+		default:
+			return <RecognizeIcon {...props} />;
+	}
+}
+
+function RevealSection({ children, className, id, amount = 0.12 }: { children: ReactNode; className: string; id?: string; amount?: number }) {
+	const reduceMotion = useReducedMotion();
+
+	return (
+		<motion.section
+			className={className}
+			id={id}
+			initial={reduceMotion ? false : "hidden"}
+			transition={{ duration: 0.88, ease: easeOut }}
+			variants={revealVariants}
+			viewport={{ once: true, amount }}
+			whileInView="visible"
+		>
+			{children}
+		</motion.section>
+	);
 }
 
 export default function Home() {
+	const reduceMotion = useReducedMotion();
+	const heroRef = useRef<HTMLElement>(null);
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [openOffer, setOpenOffer] = useState<string | null>(null);
+	const [openPractice, setOpenPractice] = useState<string | null>(null);
+	const { scrollYProgress } = useScroll();
+	const { scrollYProgress: heroProgress } = useScroll({
+		target: heroRef,
+		offset: ["start start", "end start"],
+	});
+	const heroMediaY = useTransform(heroProgress, [0, 1], [0, -54]);
+	const heroCopyY = useTransform(heroProgress, [0, 1], [0, 22]);
+	const journeyLinks = [
+		{ href: "#start", label: "Start" },
+		{ href: "#metoda", label: "Metoda" },
+		{ href: "#jak-dziala", label: "Proces" },
+		{ href: "#oferta", label: "Oferta" },
+		{ href: "#o-nas", label: "O nas" },
+		{ href: "#kontakt", label: "Kontakt" },
+	];
+
 	return (
 		<>
+			<motion.div aria-hidden="true" className="page-progress" style={{ scaleX: scrollYProgress }} />
 			<a className="skip-link" href="#tresc">
 				Przejdź do treści
 			</a>
 
-			<header className="site-header">
+			<motion.header
+				animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+				className="site-header"
+				initial={reduceMotion ? false : { opacity: 0, y: -18 }}
+				transition={{ duration: 0.65, ease: easeOut }}
+			>
 				<a href="#start" className="brand-link" aria-label="mindcolor - początek strony">
 					<Logo />
 				</a>
@@ -185,75 +296,157 @@ export default function Home() {
 				<a className="nav-cta" href="#kontakt">
 					Porozmawiajmy <ArrowIcon />
 				</a>
-				<details className="mobile-nav">
-					<summary aria-label="Otwórz menu">Menu</summary>
-					<div className="mobile-nav-panel">
-						<a href="#metoda">Metoda</a>
-						<a href="#jak-dziala">Jak działa</a>
-						<a href="#oferta">Oferta</a>
-						<a href="#o-nas">O nas</a>
-						<a href="#kontakt">Kontakt</a>
-					</div>
-				</details>
-			</header>
+				<div className="mobile-nav">
+					<button
+						aria-expanded={menuOpen}
+						aria-label={menuOpen ? "Zamknij menu" : "Otwórz menu"}
+						className="mobile-nav-toggle"
+						onClick={() => setMenuOpen((current) => !current)}
+						type="button"
+					>
+						<span>Menu</span>
+						<AnimatePresence initial={false} mode="wait">
+							<motion.span
+								animate={{ opacity: 1, rotate: 0, scale: 1 }}
+								className="mobile-nav-icon"
+								exit={{ opacity: 0, rotate: menuOpen ? -45 : 45, scale: 0.75 }}
+								initial={{ opacity: 0, rotate: menuOpen ? 45 : -45, scale: 0.75 }}
+								key={menuOpen ? "close" : "menu"}
+								transition={{ duration: 0.18, ease: easeOut }}
+							>
+								{menuOpen ? <CloseIcon /> : <MenuIcon />}
+							</motion.span>
+						</AnimatePresence>
+					</button>
+					<AnimatePresence>
+						{menuOpen && (
+							<motion.nav
+								animate={{ opacity: 1, scale: 1, y: 0 }}
+								aria-label="Nawigacja mobilna"
+								className="mobile-nav-panel"
+								exit={{ opacity: 0, scale: 0.97, y: -8 }}
+								initial={{ opacity: 0, scale: 0.97, y: -8 }}
+								transition={{ duration: 0.24, ease: easeOut }}
+							>
+								<a href="#metoda" onClick={() => setMenuOpen(false)}>
+									Metoda
+								</a>
+								<a href="#jak-dziala" onClick={() => setMenuOpen(false)}>
+									Jak działa
+								</a>
+								<a href="#oferta" onClick={() => setMenuOpen(false)}>
+									Oferta
+								</a>
+								<a href="#o-nas" onClick={() => setMenuOpen(false)}>
+									O nas
+								</a>
+								<a href="#kontakt" onClick={() => setMenuOpen(false)}>
+									Kontakt
+								</a>
+							</motion.nav>
+						)}
+					</AnimatePresence>
+				</div>
+			</motion.header>
+
+			<nav className="journey-rail" aria-label="Skróty do sekcji">
+				<motion.span aria-hidden="true" className="journey-progress" style={{ scaleY: scrollYProgress }} />
+				{journeyLinks.map((link) => (
+					<a href={link.href} key={link.href}>
+						<span aria-hidden="true" />
+						<small>{link.label}</small>
+					</a>
+				))}
+			</nav>
 
 			<main id="tresc">
-				<section className="hero section-shell" id="start">
-					<div className="hero-copy">
-						<p className="eyebrow">Autorski, zastrzeżony system pracy z dziećmi i młodzieżą</p>
-						<h1>
+				<motion.section className="hero section-shell" id="start" ref={heroRef}>
+					<motion.div
+						animate="visible"
+						className="hero-copy"
+						initial={reduceMotion ? false : "hidden"}
+						style={reduceMotion ? undefined : { y: heroCopyY }}
+						variants={heroContainerVariants}
+					>
+						<motion.p className="eyebrow" variants={heroItemVariants}>
+							Autorski, zastrzeżony system pracy z dziećmi i młodzieżą
+						</motion.p>
+						<motion.h1 variants={heroItemVariants}>
 							Nie mów dziecku, żeby się skupiło.
 							<span>Pozwól mu tego doświadczyć.</span>
-						</h1>
-						<p className="hero-lead">
+						</motion.h1>
+						<motion.p className="hero-lead" variants={heroItemVariants}>
 							mindcolor® rozwija kompetencje mentalne przez świadome doświadczenie czterech stanów: koncentracji, spokoju, kreatywności i energii.
-						</p>
-						<div className="hero-actions">
+						</motion.p>
+						<motion.div className="hero-actions" variants={heroItemVariants}>
 							<a className="button button-primary" href="#jak-dziala">
 								Zobacz, jak to działa <ArrowIcon />
 							</a>
 							<a className="text-link" href="#oferta">
-								Wybierz swoją ścieżkę <span aria-hidden="true">↓</span>
+								Wybierz swoją ścieżkę <ArrowDownIcon className="inline-icon inline-icon-down" />
 							</a>
-						</div>
-						<div className="hero-audiences" aria-label="Dla kogo jest mindcolor">
+						</motion.div>
+						<motion.div aria-label="Dla kogo jest mindcolor" className="hero-audiences" variants={heroItemVariants}>
 							<span>Dla rodziców</span>
 							<span>Dla trenerów</span>
 							<span>Dla specjalistów</span>
-						</div>
-					</div>
+						</motion.div>
+					</motion.div>
 
-					<div className="hero-visual">
-						<div className="hero-frame">
+					<motion.div
+						animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
+						className="hero-visual"
+						initial={reduceMotion ? false : { opacity: 0, scale: 0.965, y: 32 }}
+						style={reduceMotion ? undefined : { y: heroMediaY }}
+						transition={{ delay: 0.18, duration: 1.05, ease: easeOut }}
+					>
+						<motion.div className="hero-frame" whileHover={reduceMotion ? undefined : { scale: 1.008 }}>
 							<Image src="/images/mindcolor-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width={1536} height={2048} priority />
-						</div>
-						<div className="hero-note">
+						</motion.div>
+						<motion.div
+							animate={reduceMotion ? undefined : { y: [0, -7, 0] }}
+							className="hero-note"
+							transition={{ duration: 5.2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY }}
+						>
 							<span className="hero-note-number">4</span>
 							<span>stany mentalne</span>
 							<span className="hero-note-divider" />
 							<span className="hero-note-number">1</span>
 							<span>wspólny język</span>
-						</div>
-						<div className="color-orbit" aria-hidden="true">
-							<span className="dot dot-blue" />
-							<span className="dot dot-green" />
-							<span className="dot dot-yellow" />
-							<span className="dot dot-red" />
-						</div>
-					</div>
-				</section>
+						</motion.div>
+						<motion.div aria-hidden="true" className="color-orbit">
+							{["blue", "green", "yellow", "red"].map((color, index) => (
+								<motion.span
+									animate={reduceMotion ? undefined : { y: [0, -4, 0] }}
+									className={`dot dot-${color}`}
+									key={color}
+									transition={{ delay: index * 0.16, duration: 2.8, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY }}
+								/>
+							))}
+						</motion.div>
+					</motion.div>
+				</motion.section>
 
 				<section className="statement-strip" aria-label="Najważniejsza idea marki">
-					<div className="statement-track">
-						<span>Nie zagadujemy doświadczeń.</span>
-						<span className="statement-dot dot-blue" />
-						<span>Tworzymy je.</span>
-						<span className="statement-dot dot-green" />
-						<span>Pomagamy do nich wracać.</span>
-					</div>
+					<motion.div
+						animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
+						className="statement-track"
+						transition={{ duration: 25, ease: "linear", repeat: Number.POSITIVE_INFINITY }}
+					>
+						{[0, 1].map((copy) => (
+							<div aria-hidden={copy === 1} className="statement-group" key={copy}>
+								<span>Nie zagadujemy doświadczeń.</span>
+								<span className="statement-dot dot-blue" />
+								<span>Tworzymy je.</span>
+								<span className="statement-dot dot-green" />
+								<span>Pomagamy do nich wracać.</span>
+								<span className="statement-dot dot-yellow" />
+							</div>
+						))}
+					</motion.div>
 				</section>
 
-				<section className="system section-shell section-spacing reveal-section" id="metoda">
+				<RevealSection className="system section-shell section-spacing" id="metoda">
 					<div className="section-intro">
 						<p className="eyebrow">Czym jest mindcolor®?</p>
 						<h2>To nie są tylko karty. To kompletny system.</h2>
@@ -280,7 +473,7 @@ export default function Home() {
 								</div>
 							</div>
 						</div>
-						<figure className="system-figure">
+						<motion.figure className="system-figure" whileHover={reduceMotion ? undefined : { y: -6 }}>
 							<div className="system-image-frame">
 								<Image
 									src="/images/mindcolor-karty-bransoletki-v2.jpg"
@@ -290,11 +483,11 @@ export default function Home() {
 								/>
 							</div>
 							<figcaption>Narzędzia są początkiem doświadczenia - nie jego celem.</figcaption>
-						</figure>
+						</motion.figure>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="states-section section-spacing reveal-section" id="stany">
+				<RevealSection className="states-section section-spacing" id="stany">
 					<div className="section-shell">
 						<div className="section-intro section-intro-split">
 							<div>
@@ -307,11 +500,20 @@ export default function Home() {
 							</p>
 						</div>
 						<div className="states-grid">
-							{states.map((state) => (
-								<article className={`state-card state-${state.color} reveal-item`} key={state.name}>
+							{states.map((state, index) => (
+								<motion.article
+									className={`state-card state-${state.color}`}
+									initial={reduceMotion ? false : "hidden"}
+									key={state.name}
+									transition={{ delay: index * 0.07, duration: 0.7, ease: easeOut }}
+									variants={cardVariants}
+									viewport={{ once: true, amount: 0.2 }}
+									whileHover={reduceMotion ? undefined : { y: -8 }}
+									whileInView="visible"
+								>
 									<div className="state-card-top">
 										<span className="state-symbol" aria-hidden="true">
-											{state.symbol}
+											<StateGlyph name={state.icon} />
 										</span>
 										<span className="state-definition">{state.definition}</span>
 									</div>
@@ -322,29 +524,46 @@ export default function Home() {
 											<span key={cue}>{cue}</span>
 										))}
 									</div>
-								</article>
+								</motion.article>
 							))}
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="process-section section-shell section-spacing reveal-section" id="jak-dziala">
+				<RevealSection className="process-section section-shell section-spacing" id="jak-dziala">
 					<div className="section-intro centered-intro">
 						<p className="eyebrow">Jak działa mindcolor®?</p>
 						<h2>Cztery kroki. Jedno doświadczenie, które zostaje na dłużej.</h2>
 					</div>
 					<div className="process-grid">
-						{process.map((step) => (
-							<article className="process-card reveal-item" key={step.number}>
+						<motion.span
+							aria-hidden="true"
+							className="process-line"
+							initial={reduceMotion ? false : { scaleX: 0 }}
+							transition={{ duration: 1.15, ease: easeOut }}
+							viewport={{ once: true, amount: 0.5 }}
+							whileInView={{ scaleX: 1 }}
+						/>
+						{process.map((step, index) => (
+							<motion.article
+								className="process-card"
+								initial={reduceMotion ? false : "hidden"}
+								key={step.number}
+								transition={{ delay: 0.12 + index * 0.1, duration: 0.68, ease: easeOut }}
+								variants={cardVariants}
+								viewport={{ once: true, amount: 0.25 }}
+								whileHover={reduceMotion ? undefined : { y: -7 }}
+								whileInView="visible"
+							>
 								<div className="process-meta">
 									<span>{step.number}</span>
 									<span className="process-symbol" aria-hidden="true">
-										{step.symbol}
+										<ProcessGlyph name={step.icon} />
 									</span>
 								</div>
 								<h3>{step.name}</h3>
 								<p>{step.text}</p>
-							</article>
+							</motion.article>
 						))}
 					</div>
 					<div className="anchor-callout">
@@ -358,16 +577,23 @@ export default function Home() {
 							<strong>Bransoletka nie jest nagrodą.</strong> Jest kotwicą: przypomina o przeżytym stanie i pomaga świadomie do niego wrócić.
 						</p>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="audiences section-spacing reveal-section">
+				<RevealSection className="audiences section-spacing">
 					<div className="section-shell">
 						<div className="section-intro">
 							<p className="eyebrow">Jedna metoda, różne perspektywy</p>
 							<h2>Zobacz, co mindcolor® wnosi do Twojej codzienności.</h2>
 						</div>
 						<div className="audience-grid">
-							<article className="reveal-item">
+							<motion.article
+								initial={reduceMotion ? false : "hidden"}
+								transition={{ duration: 0.72, ease: easeOut }}
+								variants={cardVariants}
+								viewport={{ once: true, amount: 0.2 }}
+								whileHover={reduceMotion ? undefined : { y: -8 }}
+								whileInView="visible"
+							>
 								<span className="audience-index">01 / Rodzic</span>
 								<h3>Mniej poleceń. Więcej rozmowy i wspólnego języka.</h3>
 								<ul>
@@ -378,8 +604,15 @@ export default function Home() {
 								<a href="#kontakt">
 									Porozmawiaj z nami <ArrowIcon />
 								</a>
-							</article>
-							<article className="reveal-item">
+							</motion.article>
+							<motion.article
+								initial={reduceMotion ? false : "hidden"}
+								transition={{ delay: 0.08, duration: 0.72, ease: easeOut }}
+								variants={cardVariants}
+								viewport={{ once: true, amount: 0.2 }}
+								whileHover={reduceMotion ? undefined : { y: -8 }}
+								whileInView="visible"
+							>
 								<span className="audience-index">02 / Trener</span>
 								<h3>Trening mentalny, który można połączyć z ruchem.</h3>
 								<ul>
@@ -390,8 +623,15 @@ export default function Home() {
 								<a href="#pro">
 									Poznaj mindcolor PRO <ArrowIcon />
 								</a>
-							</article>
-							<article className="reveal-item">
+							</motion.article>
+							<motion.article
+								initial={reduceMotion ? false : "hidden"}
+								transition={{ delay: 0.16, duration: 0.72, ease: easeOut }}
+								variants={cardVariants}
+								viewport={{ once: true, amount: 0.2 }}
+								whileHover={reduceMotion ? undefined : { y: -8 }}
+								whileInView="visible"
+							>
 								<span className="audience-index">03 / Specjalista</span>
 								<h3>Konkretny proces zamiast kolejnej teczki materiałów.</h3>
 								<ul>
@@ -402,28 +642,40 @@ export default function Home() {
 								<a href="#pro">
 									Dołącz do listy zainteresowanych <ArrowIcon />
 								</a>
-							</article>
+							</motion.article>
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="manifest section-spacing reveal-section">
+				<RevealSection className="manifest section-spacing" amount={0.2}>
 					<div className="manifest-inner section-shell">
 						<p className="eyebrow eyebrow-light">W co wierzymy</p>
 						<div className="manifest-lines">
-							<p>Kompetencje mentalne zaczynają się w domu.</p>
-							<p>Intuicja rodzica ma ogromną wartość.</p>
-							<p>Trener inspiruje bardziej, niż motywuje.</p>
-							<p>Doświadczenie zostaje dłużej niż instrukcja.</p>
+							{[
+								"Kompetencje mentalne zaczynają się w domu.",
+								"Intuicja rodzica ma ogromną wartość.",
+								"Trener inspiruje bardziej, niż motywuje.",
+								"Doświadczenie zostaje dłużej niż instrukcja.",
+							].map((line, index) => (
+								<motion.p
+									initial={reduceMotion ? false : { opacity: 0, x: index % 2 === 0 ? -32 : 32 }}
+									key={line}
+									transition={{ delay: index * 0.08, duration: 0.75, ease: easeOut }}
+									viewport={{ once: true, amount: 0.4 }}
+									whileInView={{ opacity: 1, x: 0 }}
+								>
+									{line}
+								</motion.p>
+							))}
 						</div>
 						<div className="manifest-footer">
 							<Logo />
 							<span>Rozwój, który naprawdę można poczuć.</span>
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="offer-section section-shell section-spacing reveal-section" id="oferta">
+				<RevealSection className="offer-section section-shell section-spacing" id="oferta">
 					<div className="section-intro section-intro-split">
 						<div>
 							<p className="eyebrow">Oferta</p>
@@ -432,32 +684,74 @@ export default function Home() {
 						<p>Nie każda grupa potrzebuje tego samego. Zaczynamy od rozmowy i dobieramy format do wieku, miejsca, celu oraz czasu.</p>
 					</div>
 					<div className="offer-list">
-						{offers.map((offer) => (
-							<details className="offer-item reveal-item" key={offer.number}>
-								<summary>
+						{offers.map((offer, index) => {
+							const isOpen = openOffer === offer.number;
+
+							return (
+							<motion.div
+								className={`offer-item${isOpen ? " is-open" : ""}`}
+								initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+								key={offer.number}
+								transition={{ delay: index * 0.05, duration: 0.66, ease: easeOut }}
+								viewport={{ once: true, amount: 0.2 }}
+								whileInView={{ opacity: 1, y: 0 }}
+							>
+								<button
+									aria-controls={`offer-${offer.number}`}
+									aria-expanded={isOpen}
+									className="offer-summary"
+									onClick={() => setOpenOffer(isOpen ? null : offer.number)}
+									type="button"
+								>
 									<span className="offer-number">{offer.number}</span>
 									<span className="offer-title-wrap">
 										<strong>{offer.title}</strong>
 										<small>{offer.audience}</small>
 									</span>
 									<span className="offer-lead">{offer.lead}</span>
-									<span className="offer-toggle" aria-hidden="true">
-										+
-									</span>
-								</summary>
-								<div className="offer-details">
-									<p>{offer.details}</p>
-									<a className="text-link" href="#kontakt">
-										{offer.cta} <ArrowIcon />
-									</a>
-								</div>
-							</details>
-						))}
+									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="offer-toggle" transition={{ duration: 0.28, ease: easeOut }}>
+										<PlusIcon />
+									</motion.span>
+								</button>
+								<AnimatePresence initial={false}>
+									{isOpen && (
+										<motion.div
+											animate={{ height: "auto", opacity: 1 }}
+											className="offer-details-shell"
+											exit={{ height: 0, opacity: 0 }}
+											id={`offer-${offer.number}`}
+											initial={{ height: 0, opacity: 0 }}
+											transition={{ duration: 0.38, ease: easeOut }}
+										>
+											<div className="offer-details">
+												<p>{offer.details}</p>
+												<a className="text-link" href="#kontakt">
+													{offer.cta} <ArrowIcon />
+												</a>
+											</div>
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</motion.div>
+							);
+						})}
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="pro-section section-shell section-spacing reveal-section" id="pro">
+				<RevealSection className="pro-section section-shell section-spacing" id="pro">
 					<div className="pro-card">
+						<motion.span
+							animate={reduceMotion ? undefined : { rotate: 360, scale: [1, 1.035, 1] }}
+							aria-hidden="true"
+							className="pro-orbit pro-orbit-blue"
+							transition={{ duration: 24, ease: "linear", repeat: Number.POSITIVE_INFINITY }}
+						/>
+						<motion.span
+							animate={reduceMotion ? undefined : { rotate: -360, scale: [1, 0.96, 1] }}
+							aria-hidden="true"
+							className="pro-orbit pro-orbit-red"
+							transition={{ duration: 29, ease: "linear", repeat: Number.POSITIVE_INFINITY }}
+						/>
 						<div className="pro-heading">
 							<span className="status-badge">Już wkrótce</span>
 							<p className="eyebrow">Program dla specjalistów</p>
@@ -490,18 +784,18 @@ export default function Home() {
 							</ul>
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="tools-section section-spacing reveal-section">
+				<RevealSection className="tools-section section-spacing">
 					<div className="section-shell tools-grid">
-						<figure className="tools-image">
+						<motion.figure className="tools-image" whileHover={reduceMotion ? undefined : { scale: 1.012 }}>
 							<Image
 								src="/images/mindcolor-boxy-v2.jpg"
 								alt="Wizualizacja czterech zestawów mindcolor odpowiadających czterem stanom mentalnym"
 								fill
 								sizes="(max-width: 860px) calc(100vw - 40px), 56vw"
 							/>
-						</figure>
+						</motion.figure>
 						<div className="tools-copy">
 							<p className="eyebrow">Narzędzia mindcolor®</p>
 							<h2>Doświadczenie zaczyna się od prostego impulsu.</h2>
@@ -518,9 +812,9 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="inspiration section-shell section-spacing reveal-section" id="inspiracje">
+				<RevealSection className="inspiration section-shell section-spacing" id="inspiracje">
 					<div className="section-intro section-intro-split">
 						<div>
 							<p className="eyebrow">Inspiracje</p>
@@ -529,27 +823,59 @@ export default function Home() {
 						<p>Nie czekaj na specjalną okazję. Otwórz wybrany kolor i wypróbuj małe doświadczenie tu i teraz.</p>
 					</div>
 					<div className="inspiration-grid">
-						{practices.map((practice) => (
-							<details className={`inspiration-card inspiration-${practice.color} reveal-item`} key={practice.color}>
-								<summary>
+						{practices.map((practice, index) => {
+							const isOpen = openPractice === practice.color;
+
+							return (
+							<motion.div
+								className={`inspiration-card inspiration-${practice.color}${isOpen ? " is-open" : ""}`}
+								initial={reduceMotion ? false : "hidden"}
+								key={practice.color}
+								transition={{ delay: index * 0.07, duration: 0.7, ease: easeOut }}
+								variants={cardVariants}
+								viewport={{ once: true, amount: 0.2 }}
+								whileHover={reduceMotion || isOpen ? undefined : { y: -7 }}
+								whileInView="visible"
+							>
+								<button
+									aria-controls={`practice-${practice.color}`}
+									aria-expanded={isOpen}
+									className="inspiration-summary"
+									onClick={() => setOpenPractice(isOpen ? null : practice.color)}
+									type="button"
+								>
 									<span>{practice.meta}</span>
 									<h3>{practice.title}</h3>
 									<p>{practice.lead}</p>
-									<span className="inspiration-toggle" aria-hidden="true">
-										+
-									</span>
-									<small>Otwórz ćwiczenie</small>
-								</summary>
-								<div className="inspiration-details">
-									<p>{practice.instruction}</p>
-									<strong>{practice.question}</strong>
-								</div>
-							</details>
-						))}
+									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="inspiration-toggle" transition={{ duration: 0.28, ease: easeOut }}>
+										<PlusIcon />
+									</motion.span>
+									<small>{isOpen ? "Zamknij ćwiczenie" : "Otwórz ćwiczenie"}</small>
+								</button>
+								<AnimatePresence initial={false}>
+									{isOpen && (
+										<motion.div
+											animate={{ height: "auto", opacity: 1 }}
+											className="inspiration-details-shell"
+											exit={{ height: 0, opacity: 0 }}
+											id={`practice-${practice.color}`}
+											initial={{ height: 0, opacity: 0 }}
+											transition={{ duration: 0.4, ease: easeOut }}
+										>
+											<div className="inspiration-details">
+												<p>{practice.instruction}</p>
+												<strong>{practice.question}</strong>
+											</div>
+										</motion.div>
+									)}
+								</AnimatePresence>
+							</motion.div>
+							);
+						})}
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="about section-spacing reveal-section" id="o-nas">
+				<RevealSection className="about section-spacing" id="o-nas">
 					<div className="section-shell about-grid">
 						<div className="about-copy">
 							<p className="eyebrow">O nas</p>
@@ -566,7 +892,14 @@ export default function Home() {
 							</a>
 						</div>
 						<div className="founder-portraits" aria-label="Twórczynie mindcolor">
-							<figure className="founder-card reveal-item">
+							<motion.figure
+								className="founder-card"
+								initial={reduceMotion ? false : { opacity: 0, rotate: -2.5, y: 28 }}
+								transition={{ duration: 0.75, ease: easeOut }}
+								viewport={{ once: true, amount: 0.25 }}
+								whileHover={reduceMotion ? undefined : { rotate: -1, y: -7 }}
+								whileInView={{ opacity: 1, rotate: -1, y: 0 }}
+							>
 								<div className="founder-photo founder-photo-blue">
 									<Image
 										src="/images/katarzyna-gawin-lelonek.jpg"
@@ -581,8 +914,15 @@ export default function Home() {
 									<strong>Katarzyna Gawin-Lelonek</strong>
 									<span>trenerka mentalna w sporcie, pedagożka, konsultantka odporności psychicznej</span>
 								</figcaption>
-							</figure>
-							<figure className="founder-card founder-card-offset reveal-item">
+							</motion.figure>
+							<motion.figure
+								className="founder-card founder-card-offset"
+								initial={reduceMotion ? false : { opacity: 0, rotate: 2.5, y: 34 }}
+								transition={{ delay: 0.1, duration: 0.75, ease: easeOut }}
+								viewport={{ once: true, amount: 0.25 }}
+								whileHover={reduceMotion ? undefined : { rotate: 1, y: -7 }}
+								whileInView={{ opacity: 1, rotate: 1, y: 0 }}
+							>
 								<div className="founder-photo founder-photo-red">
 									<Image
 										src="/images/krystyna-swiderska-bem.jpg"
@@ -597,12 +937,12 @@ export default function Home() {
 									<strong>Krystyna Świderska-Bem</strong>
 									<span>trenerka mentalna w sporcie</span>
 								</figcaption>
-							</figure>
+							</motion.figure>
 						</div>
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="contact section-spacing reveal-section" id="kontakt">
+				<RevealSection className="contact section-spacing" id="kontakt">
 					<div className="section-shell contact-grid">
 						<div className="contact-copy">
 							<p className="eyebrow eyebrow-light">Kontakt</p>
@@ -615,9 +955,9 @@ export default function Home() {
 						</div>
 						<ContactForm />
 					</div>
-				</section>
+				</RevealSection>
 
-				<section className="newsletter">
+				<RevealSection className="newsletter" amount={0.3}>
 					<div className="section-shell newsletter-inner">
 						<div>
 							<p className="eyebrow">Bądź blisko</p>
@@ -627,7 +967,7 @@ export default function Home() {
 							Dołącz do newslettera <ArrowIcon />
 						</a>
 					</div>
-				</section>
+				</RevealSection>
 			</main>
 
 			<footer className="site-footer">

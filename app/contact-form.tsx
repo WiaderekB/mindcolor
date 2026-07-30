@@ -1,6 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
+import { ArrowUpRightIcon } from "./icons";
 
 export default function ContactForm() {
 	function prepareMessage(event: FormEvent<HTMLFormElement>) {
@@ -47,7 +48,7 @@ export default function ContactForm() {
 				<textarea name="Wiadomość" rows={4} required />
 			</label>
 			<button className="button button-light" type="submit">
-				Przygotuj wiadomość <span aria-hidden="true">↗</span>
+				Przygotuj wiadomość <ArrowUpRightIcon className="button-icon" />
 			</button>
 			<small>Po kliknięciu otworzy się Twoja aplikacja pocztowa z gotową, uzupełnioną wiadomością.</small>
 		</form>

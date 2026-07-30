@@ -25,6 +25,23 @@ test("contains the finished mindcolor homepage", async () => {
   assert.doesNotMatch(source, /chatgpt|oai-authenticated|vinext/i);
 });
 
+test("uses one motion and icon system without font-rendered arrows", async () => {
+  const [page, icons, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/icons.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(page, /from "framer-motion"/);
+  assert.match(page, /useReducedMotion/);
+  assert.match(page, /AnimatePresence/);
+  assert.match(page, /ArrowUpRightIcon/);
+  assert.match(icons, /viewBox="0 0 24 24"/);
+  assert.doesNotMatch(page, /[↗↓✦◎∿⌁]/);
+  assert.doesNotMatch(page, /<details|<summary/);
+  assert.doesNotMatch(css, /animation-timeline|@keyframes/);
+});
+
 test("builds a complete contact email from the form", async () => {
   const source = await readFile(
     new URL("../app/contact-form.tsx", import.meta.url),
@@ -45,7 +62,8 @@ test("uses the standard Next.js lifecycle", async () => {
   assert.equal(packageJson.scripts.dev, "next dev");
   assert.equal(packageJson.scripts.build, "next build");
   assert.equal(packageJson.scripts.start, "next start");
-  assert.equal(packageJson.dependencies.next, "16.2.6");
+  assert.equal(packageJson.dependencies.next, "16.2.12");
+  assert.equal(packageJson.dependencies["framer-motion"], "12.43.0");
   assert.equal(packageJson.devDependencies?.vinext, undefined);
   assert.equal(packageJson.devDependencies?.wrangler, undefined);
 });
