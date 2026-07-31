@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 		canonical: "/",
 	},
 	icons: {
-		icon: "/images/mindcolor-logo.jpg",
-		shortcut: "/images/mindcolor-logo.jpg",
-		apple: "/images/mindcolor-logo.jpg",
+		icon: "/images/logo.png",
+		shortcut: "/images/logo.png",
+		apple: "/images/logo.png",
 	},
 	openGraph: {
 		type: "website",
@@ -27,10 +27,10 @@ export const metadata: Metadata = {
 		description: "Cztery stany mentalne. Prosty język. Praktyczne narzędzia dla dzieci, rodziców, trenerów i specjalistów.",
 		images: [
 			{
-				url: "/og.png",
-				width: 1730,
-				height: 909,
-				alt: "mindcolor® - Pozwól mu tego doświadczyć.",
+				url: "/images/photo1.jpg",
+				width: 1636,
+				height: 1091,
+				alt: "Dziecko korzystające z kart mindcolor®.",
 			},
 		],
 	},
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		title: "mindcolor® - rozwój, którego można doświadczyć",
 		description: "Cztery stany mentalne. Prosty język. Praktyczne narzędzia.",
-		images: ["/og.png"],
+		images: ["/images/photo1.jpg"],
 	},
 };
 

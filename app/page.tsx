@@ -185,14 +185,8 @@ const practices = [
 
 function Logo() {
 	return (
-		<span className="wordmark" aria-label="mindcolor">
-			<span>mind</span>
-			<span className="letter-blue">c</span>
-			<span className="letter-green">o</span>
-			<span className="letter-yellow">l</span>
-			<span className="letter-red">o</span>
-			<span className="letter-blue">r</span>
-			<sup>®</sup>
+		<span className="wordmark" aria-label="mindcolor®">
+			<Image alt="" aria-hidden="true" height={500} src="/images/logo.png" width={500} />
 		</span>
 	);
 }
@@ -401,7 +395,7 @@ export default function Home() {
 						transition={{ delay: 0.18, duration: 1.05, ease: easeOut }}
 					>
 						<motion.div className="hero-frame" whileHover={reduceMotion ? undefined : { scale: 1.008 }}>
-							<Image src="/images/mindcolor-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width={1536} height={2048} priority />
+							<Image src="/images/stoisko.jpg" alt="Prawdziwa strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width={1536} height={2048} priority />
 						</motion.div>
 						<motion.div
 							animate={reduceMotion ? undefined : { y: [0, -7, 0] }}
@@ -473,17 +467,27 @@ export default function Home() {
 								</div>
 							</div>
 						</div>
-						<motion.figure className="system-figure" whileHover={reduceMotion ? undefined : { y: -6 }}>
-							<div className="system-image-frame">
-								<Image
-									src="/images/mindcolor-karty-bransoletki-v2.jpg"
-									alt="Wizualizacja kart i bransoletek mindcolor w czterech kolorach"
-									fill
-									sizes="(max-width: 860px) calc(100vw - 40px), 52vw"
-								/>
-							</div>
-							<figcaption>Narzędzia są początkiem doświadczenia - nie jego celem.</figcaption>
-						</motion.figure>
+						<div className="system-visual-story">
+							<motion.figure className="system-figure" whileHover={reduceMotion ? undefined : { y: -6 }}>
+								<div className="system-image-frame">
+									<Image
+										src="/images/photo1.jpg"
+										alt="Dziecko pokazujące karty mindcolor podczas wspólnego doświadczenia"
+										fill
+										sizes="(max-width: 860px) calc(100vw - 40px), 52vw"
+									/>
+								</div>
+								<figcaption>Narzędzia otwierają doświadczenie - nie zastępują go.</figcaption>
+							</motion.figure>
+							<motion.figure
+								className="system-detail-figure"
+								initial={reduceMotion ? false : { opacity: 0, rotate: 4, scale: 0.94 }}
+								viewport={{ once: true, amount: 0.4 }}
+								whileInView={{ opacity: 1, rotate: 2, scale: 1 }}
+							>
+								<Image src="/images/photo3.jpg" alt="Karty i kolorowe bransoletki mindcolor używane podczas ćwiczenia" fill sizes="220px" />
+							</motion.figure>
+						</div>
 					</div>
 				</RevealSection>
 
@@ -566,17 +570,17 @@ export default function Home() {
 							</motion.article>
 						))}
 					</div>
-					<div className="anchor-callout">
-						<div className="anchor-bracelets" aria-hidden="true">
-							<span className="bracelet bracelet-blue" />
-							<span className="bracelet bracelet-green" />
-							<span className="bracelet bracelet-yellow" />
-							<span className="bracelet bracelet-red" />
+					<motion.figure className="anchor-callout" whileHover={reduceMotion ? undefined : { y: -5 }}>
+						<div className="anchor-photo">
+							<Image src="/images/pohto2.jpg" alt="Dzieci uczestniczące w ruchowym doświadczeniu mindcolor" fill sizes="(max-width: 620px) calc(100vw - 76px), 300px" />
 						</div>
-						<p>
-							<strong>Bransoletka nie jest nagrodą.</strong> Jest kotwicą: przypomina o przeżytym stanie i pomaga świadomie do niego wrócić.
-						</p>
-					</div>
+						<figcaption>
+							<span>Doświadczenie w działaniu</span>
+							<p>
+								<strong>Bransoletka nie jest nagrodą.</strong> Jest kotwicą: przypomina o przeżytym stanie i pomaga świadomie do niego wrócić.
+							</p>
+						</figcaption>
+					</motion.figure>
 				</RevealSection>
 
 				<RevealSection className="audiences section-spacing">
@@ -790,11 +794,12 @@ export default function Home() {
 					<div className="section-shell tools-grid">
 						<motion.figure className="tools-image" whileHover={reduceMotion ? undefined : { scale: 1.012 }}>
 							<Image
-								src="/images/mindcolor-boxy-v2.jpg"
-								alt="Wizualizacja czterech zestawów mindcolor odpowiadających czterem stanom mentalnym"
+								src="/images/sklep.jpg"
+								alt="Przestrzeń prezentująca narzędzia mindcolor w czterech kolorach"
 								fill
 								sizes="(max-width: 860px) calc(100vw - 40px), 56vw"
 							/>
+							<figcaption>Narzędzia i kolejne formaty mindcolor® są w przygotowaniu.</figcaption>
 						</motion.figure>
 						<div className="tools-copy">
 							<p className="eyebrow">Narzędzia mindcolor®</p>
@@ -902,12 +907,11 @@ export default function Home() {
 							>
 								<div className="founder-photo founder-photo-blue">
 									<Image
-										src="/images/katarzyna-gawin-lelonek.jpg"
+										src="/images/kasia.JPG"
 										alt="Katarzyna Gawin-Lelonek"
 										width={560}
 										height={560}
 										sizes="(max-width: 620px) 72vw, 260px"
-										style={{ width: "100%", height: "auto" }}
 									/>
 								</div>
 								<figcaption>
@@ -925,12 +929,11 @@ export default function Home() {
 							>
 								<div className="founder-photo founder-photo-red">
 									<Image
-										src="/images/krystyna-swiderska-bem.jpg"
+										src="/images/Krystyna.JPG"
 										alt="Krystyna Świderska-Bem"
 										width={620}
 										height={620}
 										sizes="(max-width: 620px) 72vw, 260px"
-										style={{ width: "100%", height: "auto" }}
 									/>
 								</div>
 								<figcaption>

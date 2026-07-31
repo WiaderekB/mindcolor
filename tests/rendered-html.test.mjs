@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 test("contains the finished mindcolor homepage", async () => {
@@ -16,10 +16,13 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /kontakt@mindcolor\.pl/);
   assert.match(source, /Pięć spokojnych powrotów/);
   assert.match(source, /W programie planujemy/);
-  assert.match(source, /katarzyna-gawin-lelonek\.jpg/);
-  assert.match(source, /krystyna-swiderska-bem\.jpg/);
-  assert.match(source, /mindcolor-karty-bransoletki-v2\.jpg/);
-  assert.match(source, /mindcolor-boxy-v2\.jpg/);
+  assert.match(source, /kasia\.JPG/);
+  assert.match(source, /Krystyna\.JPG/);
+  assert.match(source, /photo1\.jpg/);
+  assert.match(source, /photo3\.jpg/);
+  assert.match(source, /pohto2\.jpg/);
+  assert.match(source, /sklep\.jpg/);
+  assert.match(source, /stoisko\.jpg/);
   assert.doesNotMatch(source, /Materiał w przygotowaniu/);
   assert.doesNotMatch(source, /Po ukończeniu programu otrzymasz/);
   assert.doesNotMatch(source, /chatgpt|oai-authenticated|vinext/i);
@@ -40,6 +43,21 @@ test("uses one motion and icon system without font-rendered arrows", async () =>
   assert.doesNotMatch(page, /[↗↓✦◎∿⌁]/);
   assert.doesNotMatch(page, /<details|<summary/);
   assert.doesNotMatch(css, /animation-timeline|@keyframes/);
+});
+
+test("uses only the supplied brand photography and logo", async () => {
+  const files = await readdir(new URL("../public/images/", import.meta.url));
+
+  assert.deepEqual(files.sort(), [
+    "Krystyna.JPG",
+    "kasia.JPG",
+    "logo.png",
+    "photo1.jpg",
+    "photo3.jpg",
+    "pohto2.jpg",
+    "sklep.jpg",
+    "stoisko.jpg",
+  ]);
 });
 
 test("builds a complete contact email from the form", async () => {
