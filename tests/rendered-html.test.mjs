@@ -20,7 +20,8 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /Krystyna\.JPG/);
   assert.match(source, /photo1\.jpg/);
   assert.match(source, /photo3\.jpg/);
-  assert.match(source, /pohto2\.jpg/);
+  assert.match(source, /logo-on-dark\.png/);
+  assert.doesNotMatch(source, /pohto2\.jpg/);
   assert.match(source, /sklep\.jpg/);
   assert.match(source, /stoisko\.jpg/);
   assert.doesNotMatch(source, /Materiał w przygotowaniu/);
@@ -51,6 +52,7 @@ test("uses only the supplied brand photography and logo", async () => {
   assert.deepEqual(files.sort(), [
     "Krystyna.JPG",
     "kasia.JPG",
+    "logo-on-dark.png",
     "logo.png",
     "photo1.jpg",
     "photo3.jpg",

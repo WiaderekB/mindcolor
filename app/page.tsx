@@ -183,10 +183,10 @@ const practices = [
 	},
 ];
 
-function Logo() {
+function Logo({ onDark = false }: { onDark?: boolean }) {
 	return (
-		<span className="wordmark" aria-label="mindcolor®">
-			<Image alt="" aria-hidden="true" height={500} src="/images/logo.png" width={500} />
+		<span className={`wordmark${onDark ? " wordmark-on-dark" : ""}`} aria-label="mindcolor®">
+			<Image alt="" aria-hidden="true" height={500} src={onDark ? "/images/logo-on-dark.png" : "/images/logo.png"} width={500} />
 		</span>
 	);
 }
@@ -570,17 +570,20 @@ export default function Home() {
 							</motion.article>
 						))}
 					</div>
-					<motion.figure className="anchor-callout" whileHover={reduceMotion ? undefined : { y: -5 }}>
-						<div className="anchor-photo">
-							<Image src="/images/pohto2.jpg" alt="Dzieci uczestniczące w ruchowym doświadczeniu mindcolor" fill sizes="(max-width: 620px) calc(100vw - 76px), 300px" />
+					<motion.div className="anchor-callout" whileHover={reduceMotion ? undefined : { y: -5 }}>
+						<div className="anchor-bracelets" aria-hidden="true">
+							<span className="bracelet bracelet-blue" />
+							<span className="bracelet bracelet-green" />
+							<span className="bracelet bracelet-yellow" />
+							<span className="bracelet bracelet-red" />
 						</div>
-						<figcaption>
+						<div className="anchor-copy">
 							<span>Doświadczenie w działaniu</span>
 							<p>
 								<strong>Bransoletka nie jest nagrodą.</strong> Jest kotwicą: przypomina o przeżytym stanie i pomaga świadomie do niego wrócić.
 							</p>
-						</figcaption>
-					</motion.figure>
+						</div>
+					</motion.div>
 				</RevealSection>
 
 				<RevealSection className="audiences section-spacing">
@@ -673,7 +676,7 @@ export default function Home() {
 							))}
 						</div>
 						<div className="manifest-footer">
-							<Logo />
+							<Logo onDark />
 							<span>Rozwój, który naprawdę można poczuć.</span>
 						</div>
 					</div>
