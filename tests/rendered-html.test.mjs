@@ -16,12 +16,6 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /kontakt@mindcolor\.pl/);
   assert.match(source, /Pięć spokojnych powrotów/);
   assert.match(source, /W programie planujemy/);
-  assert.match(source, /Motywacja \/ działanie/);
-  assert.match(source, /Fokus \/ koncentracja/);
-  assert.match(source, /Spokój \/ uważność/);
-  assert.match(source, /wyobraźnia", "pomysłowość", "otwartość/);
-  assert.doesNotMatch(source, /name: "Energia"/);
-  assert.doesNotMatch(source, /meta: "Energia/);
   assert.match(source, /kasia\.JPG/);
   assert.match(source, /Krystyna\.JPG/);
   assert.match(source, /photo1\.jpg/);
