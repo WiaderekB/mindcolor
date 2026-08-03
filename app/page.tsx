@@ -69,12 +69,12 @@ const states = [
 		cues: ["pomysły", "lekkość", "nowe możliwości"],
 	},
 	{
-		name: "Energia",
+		name: "Motywacja",
 		color: "red",
 		icon: "energy",
 		definition: "Działam",
-		description: "Ciało i myśli są gotowe do ruchu. To odwaga, zaangażowanie i decyzja, by zrobić pierwszy krok.",
-		cues: ["odwaga", "motywacja", "wytrwałość"],
+		description: "Ciało i myśli są gotowe do ruchu. To energia, zaangażowanie i decyzja, by zrobić pierwszy krok.",
+		cues: ["energia", "działanie", "wytrwałość"],
 	},
 ];
 
@@ -175,7 +175,7 @@ const practices = [
 	},
 	{
 		color: "red",
-		meta: "Energia / 1 minuta",
+		meta: "Motywacja / 1 minuta",
 		title: "Pierwszy mały krok",
 		lead: "Kiedy trudno zacząć, choć wiadomo już, co jest do zrobienia.",
 		instruction: "Przez dziesięć sekund poruszaj całym ciałem, zatrzymaj się i nazwij najmniejszy możliwy krok, który możesz zrobić teraz.",
@@ -370,7 +370,7 @@ export default function Home() {
 							<span>Pozwól mu tego doświadczyć.</span>
 						</motion.h1>
 						<motion.p className="hero-lead" variants={heroItemVariants}>
-							mindcolor® rozwija kompetencje mentalne przez świadome doświadczenie czterech stanów: koncentracji, spokoju, kreatywności i energii.
+							mindcolor® rozwija kompetencje mentalne przez świadome doświadczenie czterech stanów: koncentracji, spokoju, kreatywności i motywacji.
 						</motion.p>
 						<motion.div className="hero-actions" variants={heroItemVariants}>
 							<a className="button button-primary" href="#jak-dziala">
@@ -429,6 +429,7 @@ export default function Home() {
 					>
 						{[0, 1].map((copy) => (
 							<div aria-hidden={copy === 1} className="statement-group" key={copy}>
+								<span className="statement-dot dot-red" />
 								<span>Nie zagadujemy doświadczeń.</span>
 								<span className="statement-dot dot-blue" />
 								<span>Tworzymy je.</span>

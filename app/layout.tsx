@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 		default: "mindcolor® - kompetencje mentalne poprzez doświadczenie",
 		template: "%s | mindcolor®",
 	},
-	description: "Praktyczny system rozwijania koncentracji, spokoju, kreatywności i energii u dzieci i młodzieży.",
+	description: "Praktyczny system rozwijania koncentracji, spokoju, kreatywności i motywacji u dzieci i młodzieży.",
 	alternates: {
 		canonical: "/",
 	},

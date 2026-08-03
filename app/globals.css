@@ -561,9 +561,14 @@ textarea:focus-visible {
 
 .statement-group {
   display: flex;
+  width: max-content;
+  min-width: 100vw;
+  flex: 0 0 auto;
   align-items: center;
+  justify-content: space-evenly;
   gap: clamp(24px, 4vw, 58px);
-  padding-right: clamp(24px, 4vw, 58px);
+  padding-inline: clamp(24px, 4vw, 58px);
+  box-sizing: border-box;
   white-space: nowrap;
 }
 
@@ -2188,7 +2193,7 @@ textarea:focus-visible {
 
   .statement-group {
     gap: 25px;
-    padding-right: 25px;
+    padding-inline: 25px;
   }
 
   .section-intro {

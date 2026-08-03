@@ -16,6 +16,9 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /kontakt@mindcolor\.pl/);
   assert.match(source, /Pięć spokojnych powrotów/);
   assert.match(source, /W programie planujemy/);
+  assert.match(source, /name: "Motywacja"/);
+  assert.match(source, /meta: "Motywacja \/ 1 minuta"/);
+  assert.doesNotMatch(source, /name: "Energia"/);
   assert.match(source, /kasia\.JPG/);
   assert.match(source, /Krystyna\.JPG/);
   assert.match(source, /photo1\.jpg/);
@@ -40,6 +43,8 @@ test("uses one motion and icon system without font-rendered arrows", async () =>
   assert.match(page, /useReducedMotion/);
   assert.match(page, /AnimatePresence/);
   assert.match(page, /ArrowUpRightIcon/);
+  assert.match(page, /statement-dot dot-red/);
+  assert.match(css, /\.statement-group[\s\S]*?min-width: 100vw/);
   assert.match(icons, /viewBox="0 0 24 24"/);
   assert.doesNotMatch(page, /[↗↓✦◎∿⌁]/);
   assert.doesNotMatch(page, /<details|<summary/);
