@@ -45,36 +45,36 @@ const heroItemVariants = {
 
 const states = [
 	{
-		name: "Koncentracja",
-		color: "blue",
-		icon: "focus",
-		definition: "Skupiam się",
-		description: "Uwaga kieruje się na to, co w tej chwili naprawdę ważne. Jedno zadanie, jeden krok, świadoma obecność.",
-		cues: ["fokus", "uważność", "planowanie"],
-	},
-	{
-		name: "Spokój",
-		color: "green",
-		icon: "calm",
-		definition: "Reguluję",
-		description: "Napięcie opada, oddech zwalnia, a dziecko odzyskuje równowagę i kontakt ze sobą.",
-		cues: ["oddech", "równowaga", "powrót do siebie"],
-	},
-	{
 		name: "Kreatywność",
 		color: "yellow",
 		icon: "spark",
-		definition: "Szukam rozwiązań",
-		description: "Pojawia się ciekawość, elastyczność i gotowość, by spróbować inaczej - bez lęku przed błędem.",
-		cues: ["pomysły", "lekkość", "nowe możliwości"],
+		definition: "Tworzę",
+		description: "Wyobraźnia uruchamia nowe pomysły. Dziecko szuka własnych rozwiązań, eksperymentuje i otwiera się na inne możliwości.",
+		cues: ["wyobraźnia", "pomysłowość", "otwartość"],
 	},
 	{
-		name: "Energia",
+		name: "Fokus / koncentracja",
+		color: "blue",
+		icon: "focus",
+		definition: "Skupiam się",
+		description: "Uwaga kieruje się na cel. Dziecko ćwiczy skupienie, wytrwałość i planowanie, a dorosły wspiera je w kolejnym kroku.",
+		cues: ["skupienie", "wytrwałość", "planowanie"],
+	},
+	{
+		name: "Motywacja / działanie",
 		color: "red",
 		icon: "energy",
 		definition: "Działam",
-		description: "Ciało i myśli są gotowe do ruchu. To odwaga, zaangażowanie i decyzja, by zrobić pierwszy krok.",
-		cues: ["odwaga", "motywacja", "wytrwałość"],
+		description: "Energia zamienia się w działanie. Dziecko podejmuje decyzję, zaczyna i robi kolejny krok, także wtedy, gdy pojawia się opór.",
+		cues: ["energia", "działanie"],
+	},
+	{
+		name: "Spokój / uważność",
+		color: "green",
+		icon: "calm",
+		definition: "Czuję",
+		description: "Dziecko zauważa emocje i sygnały z ciała. Oddech pomaga regulować napięcie i wracać do równowagi, a dorosły daje przestrzeń.",
+		cues: ["regulacja emocji", "oddech", "równowaga"],
 	},
 ];
 
@@ -150,22 +150,6 @@ const offers = [
 
 const practices = [
 	{
-		color: "blue",
-		meta: "Koncentracja / 1 minuta",
-		title: "Pięć spokojnych powrotów",
-		lead: "Na moment przed nauką, treningiem albo zadaniem, które wymaga pełnej uwagi.",
-		instruction: "Wybierz jeden punkt przed sobą. Przez pięć spokojnych oddechów wracaj do niego wzrokiem za każdym razem, gdy uwaga odpłynie.",
-		question: "Na koniec zapytaj: co najbardziej pomogło Ci wrócić?",
-	},
-	{
-		color: "green",
-		meta: "Spokój / 1 minuta",
-		title: "Napnij i odpuść",
-		lead: "Prosty sposób, by najpierw zauważyć napięcie, a dopiero potem o nim rozmawiać.",
-		instruction: "Zaciśnij dłonie na trzy sekundy, a potem powoli je rozluźnij. Powtórz trzy razy i zauważ różnicę w ciele.",
-		question: "Na koniec zapytaj: gdzie teraz jest choć odrobinę lżej?",
-	},
-	{
 		color: "yellow",
 		meta: "Kreatywność / 2 minuty",
 		title: "Trzy inne drogi",
@@ -174,12 +158,28 @@ const practices = [
 		question: "Na koniec zapytaj: który pomysł najbardziej Cię zaskoczył?",
 	},
 	{
+		color: "blue",
+		meta: "Fokus i koncentracja / 1 minuta",
+		title: "Pięć spokojnych powrotów",
+		lead: "Na moment przed nauką, treningiem albo zadaniem, które wymaga pełnej uwagi.",
+		instruction: "Wybierz jeden punkt przed sobą. Przez pięć spokojnych oddechów wracaj do niego wzrokiem za każdym razem, gdy uwaga odpłynie.",
+		question: "Na koniec zapytaj: co najbardziej pomogło Ci wrócić?",
+	},
+	{
 		color: "red",
-		meta: "Energia / 1 minuta",
+		meta: "Motywacja i działanie / 1 minuta",
 		title: "Pierwszy mały krok",
 		lead: "Kiedy trudno zacząć, choć wiadomo już, co jest do zrobienia.",
 		instruction: "Przez dziesięć sekund poruszaj całym ciałem, zatrzymaj się i nazwij najmniejszy możliwy krok, który możesz zrobić teraz.",
 		question: "Nie planuj całości. Zrób tylko ten jeden krok.",
+	},
+	{
+		color: "green",
+		meta: "Spokój i uważność / 1 minuta",
+		title: "Napnij i odpuść",
+		lead: "Prosty sposób, by najpierw zauważyć napięcie, a dopiero potem o nim rozmawiać.",
+		instruction: "Zaciśnij dłonie na trzy sekundy, a potem powoli je rozluźnij. Powtórz trzy razy i zauważ różnicę w ciele.",
+		question: "Na koniec zapytaj: gdzie teraz jest choć odrobinę lżej?",
 	},
 ];
 
@@ -370,7 +370,7 @@ export default function Home() {
 							<span>Pozwól mu tego doświadczyć.</span>
 						</motion.h1>
 						<motion.p className="hero-lead" variants={heroItemVariants}>
-							mindcolor® rozwija kompetencje mentalne przez świadome doświadczenie czterech stanów: koncentracji, spokoju, kreatywności i energii.
+							mindcolor® rozwija kompetencje mentalne przez świadome doświadczenie czterech stanów: kreatywności, fokusu i koncentracji, motywacji do działania oraz spokoju i uważności.
 						</motion.p>
 						<motion.div className="hero-actions" variants={heroItemVariants}>
 							<a className="button button-primary" href="#jak-dziala">
@@ -447,7 +447,7 @@ export default function Home() {
 					</div>
 					<div className="system-grid">
 						<div className="system-copy">
-							<p className="large-copy">Dzieci nie rozwijają koncentracji, spokoju czy odwagi tylko dlatego, że ktoś im o nich opowiada.</p>
+							<p className="large-copy">Dzieci nie rozwijają kreatywności, koncentracji, motywacji do działania ani spokoju tylko dlatego, że ktoś im o nich opowiada.</p>
 							<p>
 								Potrzebują sytuacji, w której mogą dany stan rozpoznać, przeżyć, nazwać i zapamiętać. Karty, ćwiczenia, pytania, aktywności i bransoletki
 								pomagają takie doświadczenie stworzyć - i wrócić do niego wtedy, kiedy jest najbardziej potrzebne.
