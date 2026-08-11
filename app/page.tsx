@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState, type ReactNode } from "react";
+import testimonialEntries from "@/data/testimonials.json";
 import ContactForm from "./contact-form";
 import {
 	AnchorIcon,
@@ -183,26 +184,8 @@ const practices = [
 	},
 ];
 
-const testimonials = [
-	{
-		color: "blue",
-		group: "Rodzice",
-		context: "Warsztaty mindcolor®",
-		placeholder: "Wkrótce opublikujemy tu autentyczną opinię rodzica po warsztacie mindcolor®.",
-	},
-	{
-		color: "green",
-		group: "Trenerzy",
-		context: "Praca z zespołem",
-		placeholder: "Wkrótce pojawi się tu głos trenera pracującego z metodą mindcolor®.",
-	},
-	{
-		color: "yellow",
-		group: "Specjaliści",
-		context: "Szkolenia i konsultacje",
-		placeholder: "Wkrótce dodamy tu opinię o praktycznym zastosowaniu metody w codziennej pracy.",
-	},
-];
+const testimonialColors = ["blue", "green", "yellow", "red"] as const;
+const testimonials = testimonialEntries.slice(0, 10);
 
 function Logo({ onDark = false }: { onDark?: boolean }) {
 	return (
@@ -267,6 +250,7 @@ function RevealSection({ children, className, id, amount = 0.12 }: { children: R
 export default function Home() {
 	const reduceMotion = useReducedMotion();
 	const heroRef = useRef<HTMLElement>(null);
+	const testimonialsTrackRef = useRef<HTMLDivElement>(null);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [openOffer, setOpenOffer] = useState<string | null>(null);
 	const [openPractice, setOpenPractice] = useState<string | null>(null);
@@ -277,6 +261,16 @@ export default function Home() {
 	});
 	const heroMediaY = useTransform(heroProgress, [0, 1], [0, -54]);
 	const heroCopyY = useTransform(heroProgress, [0, 1], [0, 22]);
+	const scrollTestimonials = (direction: -1 | 1) => {
+		const track = testimonialsTrackRef.current;
+
+		if (!track) return;
+
+		track.scrollTo({
+			behavior: reduceMotion ? "auto" : "smooth",
+			left: track.scrollLeft + direction * Math.min(360, track.clientWidth * 0.88),
+		});
+	};
 	const journeyLinks = [
 		{ href: "#start", label: "Start" },
 		{ href: "#metoda", label: "Metoda" },
@@ -353,6 +347,9 @@ export default function Home() {
 								<a href="#oferta" onClick={() => setMenuOpen(false)}>
 									Oferta
 								</a>
+								<a href="#opinie" onClick={() => setMenuOpen(false)}>
+									Opinie
+								</a>
 								<a href="#o-nas" onClick={() => setMenuOpen(false)}>
 									O nas
 								</a>
@@ -417,7 +414,7 @@ export default function Home() {
 						transition={{ delay: 0.18, duration: 1.05, ease: easeOut }}
 					>
 						<motion.div className="hero-frame" whileHover={reduceMotion ? undefined : { scale: 1.008 }}>
-							<Image src="/images/stoisko.jpg" alt="Prawdziwa strefa mindcolor z czterema kolorowymi stanowiskami doświadczeń" width={1536} height={2048} priority />
+							<Image src="/images/hero-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi obszarami doświadczeń" width={1536} height={2048} priority />
 						</motion.div>
 						<motion.div
 							animate={reduceMotion ? undefined : { y: [0, -7, 0] }}
@@ -494,8 +491,8 @@ export default function Home() {
 							<motion.figure className="system-figure" whileHover={reduceMotion ? undefined : { y: -6 }}>
 								<div className="system-image-frame">
 									<Image
-										src="/images/training-moment.jpg"
-										alt="Uczestnicy ćwiczenia mindcolor pracujący z kartą i kolorowymi bransoletkami"
+										src="/images/group-card-session.jpg"
+										alt="Grupa uczestników podczas ćwiczenia z kartami mindcolor"
 										fill
 										sizes="(max-width: 860px) calc(100vw - 40px), 52vw"
 									/>
@@ -508,7 +505,7 @@ export default function Home() {
 								viewport={{ once: true, amount: 0.4 }}
 								whileInView={{ opacity: 1, rotate: 2, scale: 1 }}
 							>
-								<Image src="/images/cards-in-action.jpg" alt="Karty mindcolor używane podczas wspólnego ćwiczenia" fill sizes="220px" />
+								<Image src="/images/cards-table.jpg" alt="Karty i kolorowe bransoletki mindcolor podczas ćwiczenia" fill sizes="220px" />
 							</motion.figure>
 						</div>
 					</div>
@@ -595,7 +592,7 @@ export default function Home() {
 					</div>
 					<motion.div className="anchor-callout" whileHover={reduceMotion ? undefined : { y: -5 }}>
 						<div className="anchor-media">
-							<Image src="/images/training-moment.jpg" alt="Karta mindcolor i kolorowe bransoletki podczas ćwiczenia" fill sizes="250px" />
+							<Image src="/images/bracelet-session.jpg" alt="Dzieci zakładające kolorowe bransoletki podczas ćwiczenia mindcolor" fill sizes="250px" />
 						</div>
 						<div className="anchor-copy">
 							<span>Doświadczenie w działaniu</span>
@@ -676,7 +673,7 @@ export default function Home() {
 
 				<RevealSection className="manifest section-spacing" amount={0.2}>
 					<div aria-hidden="true" className="manifest-backdrop">
-						<Image src="/images/pohto2.jpg" alt="" fill sizes="100vw" />
+						<Image src="/images/mental-training-lights.jpg" alt="" fill sizes="100vw" />
 					</div>
 					<div className="manifest-inner section-shell">
 						<p className="eyebrow eyebrow-light">W co wierzymy</p>
@@ -820,12 +817,12 @@ export default function Home() {
 					<div className="section-shell tools-grid">
 						<motion.figure className="tools-image" whileHover={reduceMotion ? undefined : { scale: 1.012 }}>
 							<Image
-								src="/images/strefa-in-action.jpg"
-								alt="Prowadząca pracująca z kartami w strefie mindcolor"
+								src="/images/tools-studio.jpg"
+								alt="Przestrzeń prezentująca narzędzia i cztery obszary mindcolor"
 								fill
 								sizes="(max-width: 860px) calc(100vw - 40px), 56vw"
 							/>
-							<figcaption>Strefa mindcolor® podczas wydarzenia.</figcaption>
+							<figcaption>Narzędzia mindcolor® tworzą spójny system pracy.</figcaption>
 						</motion.figure>
 						<div className="tools-copy">
 							<p className="eyebrow">Narzędzia mindcolor®</p>
@@ -908,33 +905,52 @@ export default function Home() {
 
 				<RevealSection className="testimonials section-spacing" id="opinie">
 					<div className="section-shell">
-						<div className="testimonials-heading">
+						<div className="section-intro section-intro-split testimonials-heading">
 							<div>
 								<p className="eyebrow">Opinie</p>
-								<h2>Najlepiej opowiadają o tym osoby, które tego doświadczyły.</h2>
+								<h2>Głosy osób, które doświadczyły mindcolor®.</h2>
 							</div>
-							<p>Wkrótce pojawią się tutaj głosy rodziców, trenerów i specjalistów, którzy pracowali z metodą mindcolor®.</p>
+							<div className="testimonials-aside">
+								<p>Rodzice, trenerzy i specjaliści najlepiej pokazują, jak metoda działa w praktyce.</p>
+								<div className="testimonials-controls" aria-label="Sterowanie opiniami">
+									<button aria-label="Poprzednie opinie" onClick={() => scrollTestimonials(-1)} type="button">
+										<ArrowUpRightIcon />
+									</button>
+									<span>
+										{String(testimonials.length).padStart(2, "0")} {testimonials.length === 1 ? "opinia" : testimonials.length < 5 ? "opinie" : "opinii"}
+									</span>
+									<button aria-label="Następne opinie" onClick={() => scrollTestimonials(1)} type="button">
+										<ArrowUpRightIcon />
+									</button>
+								</div>
+							</div>
 						</div>
-						<div className="testimonials-grid">
-							{testimonials.map((testimonial, index) => (
-								<motion.article
-									className={`testimonial-card testimonial-${testimonial.color}`}
-									initial={reduceMotion ? false : "hidden"}
-									key={testimonial.group}
-									transition={{ delay: index * 0.08, duration: 0.72, ease: easeOut }}
-									variants={cardVariants}
-									viewport={{ once: true, amount: 0.2 }}
-									whileHover={reduceMotion ? undefined : { y: -8 }}
-									whileInView="visible"
-								>
-									<span aria-hidden="true" className="testimonial-quote">“</span>
-									<p>{testimonial.placeholder}</p>
-									<footer>
-										<strong>{testimonial.group}</strong>
-										<span>{testimonial.context}</span>
-									</footer>
-								</motion.article>
-							))}
+						<div className="testimonials-track" ref={testimonialsTrackRef}>
+							{testimonials.map((testimonial, index) => {
+								const color = testimonialColors[index % testimonialColors.length];
+
+								return (
+									<motion.article
+										className={`testimonial-card testimonial-${color}`}
+										initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+										key={`${testimonial.author}-${index}`}
+										transition={{ delay: index * 0.06, duration: 0.66, ease: easeOut }}
+										viewport={{ once: true, amount: 0.18 }}
+										whileHover={reduceMotion ? undefined : { rotate: index % 2 === 0 ? -0.7 : 0.7, y: -7 }}
+										whileInView={{ opacity: 1, x: 0 }}
+									>
+										<div className="testimonial-card-top">
+											<span>{String(index + 1).padStart(2, "0")}</span>
+											<span aria-hidden="true" className="testimonial-mark">“</span>
+										</div>
+										<p>{testimonial.text}</p>
+										<footer>
+											<strong>{testimonial.author}</strong>
+											<span>{testimonial.context}</span>
+										</footer>
+									</motion.article>
+								);
+							})}
 						</div>
 						<p className="testimonials-note">Publikujemy wyłącznie autentyczne wypowiedzi za zgodą ich autorów.</p>
 					</div>
@@ -1020,17 +1036,6 @@ export default function Home() {
 					</div>
 				</RevealSection>
 
-				<RevealSection className="newsletter" amount={0.3}>
-					<div className="section-shell newsletter-inner">
-						<div>
-							<p className="eyebrow">Bądź blisko</p>
-							<h2>Ćwiczenia, inspiracje i kolejne kroki mindcolor®.</h2>
-						</div>
-						<a className="button button-primary" href="mailto:kontakt@mindcolor.pl?subject=Chcę%20dołączyć%20do%20newslettera%20mindcolor">
-							Dołącz do newslettera <ArrowIcon />
-						</a>
-					</div>
-				</RevealSection>
 			</main>
 
 			<footer className="site-footer">

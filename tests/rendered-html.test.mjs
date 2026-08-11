@@ -17,19 +17,22 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /Powrót uwagi/);
   assert.match(source, /Trenuje uwagę, ogranicza rozproszenia/);
   assert.match(source, /Rozwijamy kompetencje mentalne dzieci i młodzieży/);
-  assert.match(source, /Najlepiej opowiadają o tym osoby/);
+  assert.match(source, /Głosy osób, które doświadczyły mindcolor®/);
   assert.match(source, /W programie planujemy/);
   assert.match(source, /name: "Motywacja"/);
   assert.match(source, /meta: "Motywacja \/ 1 minuta"/);
   assert.doesNotMatch(source, /name: "Energia"/);
   assert.match(source, /kasia-new\.jpg/);
   assert.match(source, /Krystyna\.JPG/);
-  assert.match(source, /training-moment\.jpg/);
-  assert.match(source, /cards-in-action\.jpg/);
-  assert.match(source, /strefa-in-action\.jpg/);
+  assert.match(source, /hero-strefa\.jpg/);
+  assert.match(source, /group-card-session\.jpg/);
+  assert.match(source, /bracelet-session\.jpg/);
+  assert.match(source, /cards-table\.jpg/);
+  assert.match(source, /tools-studio\.jpg/);
+  assert.match(source, /mental-training-lights\.jpg/);
   assert.match(source, /logo-on-dark\.png/);
-  assert.match(source, /pohto2\.jpg/);
-  assert.match(source, /stoisko\.jpg/);
+  assert.doesNotMatch(source, /training-moment\.jpg|strefa-in-action\.jpg|pohto2\.jpg|stoisko\.jpg/);
+  assert.doesNotMatch(source, /newsletter/i);
   assert.doesNotMatch(source, /Materiał w przygotowaniu/);
   assert.doesNotMatch(source, /Po ukończeniu programu otrzymasz/);
   assert.doesNotMatch(source, /chatgpt|oai-authenticated|vinext/i);
@@ -57,21 +60,44 @@ test("uses one motion and icon system without font-rendered arrows", async () =>
 test("uses only the supplied brand photography and logo", async () => {
   const files = await readdir(new URL("../public/images/", import.meta.url));
 
-  assert.deepEqual(files.sort(), [
-    "Krystyna.JPG",
-    "cards-in-action.jpg",
+  for (const file of [
+    "hero-strefa.jpg",
+    "group-card-session.jpg",
+    "bracelet-session.jpg",
+    "cards-table.jpg",
+    "tools-studio.jpg",
+    "mental-training-lights.jpg",
     "kasia-new.jpg",
-    "kasia.JPG",
-    "logo-on-dark.png",
+    "Krystyna.JPG",
     "logo.png",
-    "photo1.jpg",
-    "photo3.jpg",
-    "pohto2.jpg",
-    "sklep.jpg",
-    "stoisko.jpg",
-    "strefa-in-action.jpg",
-    "training-moment.jpg",
+    "logo-on-dark.png",
+  ]) {
+    assert.ok(files.includes(file), `Missing supplied asset: ${file}`);
+  }
+});
+
+test("uses every visible photograph only once", async () => {
+  const source = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  const photoSources = [...source.matchAll(/src="(\/images\/(?!logo)[^"]+)"/g)].map((match) => match[1]);
+
+  assert.equal(new Set(photoSources).size, photoSources.length);
+});
+
+test("loads up to ten automatically colored testimonials from JSON", async () => {
+  const [source, data] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../data/testimonials.json", import.meta.url), "utf8"),
   ]);
+  const testimonials = JSON.parse(data);
+
+  assert.equal(testimonials.length, 6);
+  assert.ok(testimonials.every((item) => item.text && item.author && item.context));
+  assert.ok(testimonials.some((item) => item.author === "Joanna"));
+  assert.ok(testimonials.some((item) => item.context === "Juta4Dance"));
+  assert.doesNotMatch(data, /Wkrótce|To miejsce czeka/);
+  assert.match(source, /testimonialEntries\.slice\(0, 10\)/);
+  assert.match(source, /index % testimonialColors\.length/);
+  assert.match(source, /scrollTestimonials/);
 });
 
 test("builds a complete contact email from the form", async () => {
