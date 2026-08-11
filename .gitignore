@@ -39,6 +39,8 @@ next-env.d.ts
 /dist/
 /.wrangler/
 /outputs/
+/output/
+/tmp/
 /work/
 /.codex-tmp/
 /brief-mindcolor-strona-internetowa.docx

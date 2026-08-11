@@ -49,7 +49,7 @@ const states = [
 		color: "blue",
 		icon: "focus",
 		definition: "Skupiam się",
-		description: "Uwaga kieruje się na to, co w tej chwili naprawdę ważne. Jedno zadanie, jeden krok, świadoma obecność.",
+		description: "Trenuje uwagę, ogranicza rozproszenia i pomaga wracać do zadania.",
 		cues: ["fokus", "uważność", "planowanie"],
 	},
 	{
@@ -57,7 +57,7 @@ const states = [
 		color: "green",
 		icon: "calm",
 		definition: "Reguluję",
-		description: "Napięcie opada, oddech zwalnia, a dziecko odzyskuje równowagę i kontakt ze sobą.",
+		description: "Rozwija uważność, świadomy oddech i pomaga regulować układ nerwowy.",
 		cues: ["oddech", "równowaga", "powrót do siebie"],
 	},
 	{
@@ -65,7 +65,7 @@ const states = [
 		color: "yellow",
 		icon: "spark",
 		definition: "Szukam rozwiązań",
-		description: "Pojawia się ciekawość, elastyczność i gotowość, by spróbować inaczej - bez lęku przed błędem.",
+		description: "Rozwija elastyczne myślenie, szukanie rozwiązań i odwagę do próbowania.",
 		cues: ["pomysły", "lekkość", "nowe możliwości"],
 	},
 	{
@@ -73,7 +73,7 @@ const states = [
 		color: "red",
 		icon: "energy",
 		definition: "Działam",
-		description: "Ciało i myśli są gotowe do ruchu. To energia, zaangażowanie i decyzja, by zrobić pierwszy krok.",
+		description: "Pomaga przejść od zamiaru do działania i budować wytrwałość.",
 		cues: ["energia", "działanie", "wytrwałość"],
 	},
 ];
@@ -110,7 +110,7 @@ const offers = [
 		number: "01",
 		title: "Warsztaty",
 		audience: "Dla dzieci, młodzieży, szkół i klubów",
-		lead: "Tworzymy warunki, w których uczestnicy naprawdę doświadczają czterech stanów.",
+		lead: "Trening kompetencji mentalnych poprzez ruch, doświadczenie i wspólne ćwiczenia.",
 		details: "Ruch, ćwiczenia, karty i rozmowa składają się na angażujące spotkanie dopasowane do wieku i potrzeb grupy.",
 		cta: "Zapytaj o warsztat",
 	},
@@ -118,7 +118,7 @@ const offers = [
 		number: "02",
 		title: "Strefy mindcolor®",
 		audience: "Dla organizatorów wydarzeń",
-		lead: "Interaktywna przestrzeń, która włącza uczestników w doświadczenie - nie tylko opowiada o rozwoju.",
+		lead: "Interaktywna przestrzeń, w której uczestnicy doświadczają koncentracji, spokoju, kreatywności i motywacji.",
 		details: "Strefa sprawdzi się podczas wydarzeń sportowych, edukacyjnych i rodzinnych. Włączymy ją w program wydarzenia i poprowadzimy uczestników przez cztery stany.",
 		cta: "Zaproś strefę na event",
 	},
@@ -126,7 +126,7 @@ const offers = [
 		number: "03",
 		title: "Konsultacje",
 		audience: "Dla rodziców, trenerów i klubów",
-		lead: "Przekładamy trudną sytuację na prosty język, konkretny plan i narzędzia możliwe do użycia od razu.",
+		lead: "Indywidualne wsparcie dla rodziców, trenerów i specjalistów – konkretne rozwiązania dopasowane do sytuacji.",
 		details: "Pracujemy indywidualnie z rodzicami, trenerami, klubami oraz młodymi sportowcami. Zakres spotkania ustalamy przed konsultacją.",
 		cta: "Umów rozmowę",
 	},
@@ -134,7 +134,7 @@ const offers = [
 		number: "04",
 		title: "Wystąpienia",
 		audience: "Dla konferencji, szkół i klubów",
-		lead: "O treningu mentalnym bez trudnego języka - blisko codzienności dzieci i dorosłych.",
+		lead: "Wykłady i prelekcje o treningu mentalnym, psychologii oraz rozwoju dzieci i młodzieży.",
 		details: "Wystąpienia dla rodziców, nauczycieli, trenerów i organizacji. Temat oraz długość dopasowujemy do odbiorców i formatu wydarzenia.",
 		cta: "Zaproś nas",
 	},
@@ -142,7 +142,7 @@ const offers = [
 		number: "05",
 		title: "Szkolenia",
 		audience: "Dla zespołów pracujących z dziećmi",
-		lead: "Wspólny język i praktyczny sposób pracy dla całego zespołu.",
+		lead: "Gotowy system pracy metodą mindcolor dla trenerów, nauczycieli, psychologów i pedagogów.",
 		details: "Szkolenia rozwijają umiejętność prowadzenia doświadczenia, rozmowy i świadomego zakotwiczenia wybranego stanu.",
 		cta: "Porozmawiaj o szkoleniu",
 	},
@@ -152,24 +152,24 @@ const practices = [
 	{
 		color: "blue",
 		meta: "Koncentracja / 1 minuta",
-		title: "Pięć spokojnych powrotów",
-		lead: "Na moment przed nauką, treningiem albo zadaniem, które wymaga pełnej uwagi.",
+		title: "Powrót uwagi",
+		lead: "Krótkie ćwiczenie pomagające wrócić do koncentracji przed nauką, treningiem lub zadaniem.",
 		instruction: "Wybierz jeden punkt przed sobą. Przez pięć spokojnych oddechów wracaj do niego wzrokiem za każdym razem, gdy uwaga odpłynie.",
 		question: "Na koniec zapytaj: co najbardziej pomogło Ci wrócić?",
 	},
 	{
 		color: "green",
 		meta: "Spokój / 1 minuta",
-		title: "Napnij i odpuść",
-		lead: "Prosty sposób, by najpierw zauważyć napięcie, a dopiero potem o nim rozmawiać.",
+		title: "Zatrzymaj się i zauważ",
+		lead: "Ćwiczenie uważności i świadomego oddechu wspierające regulację układu nerwowego.",
 		instruction: "Zaciśnij dłonie na trzy sekundy, a potem powoli je rozluźnij. Powtórz trzy razy i zauważ różnicę w ciele.",
 		question: "Na koniec zapytaj: gdzie teraz jest choć odrobinę lżej?",
 	},
 	{
 		color: "yellow",
 		meta: "Kreatywność / 2 minuty",
-		title: "Trzy inne drogi",
-		lead: "Kiedy pierwszy pomysł nie działa albo pojawia się blokada.",
+		title: "Poszukaj trzeciej drogi",
+		lead: "Ćwiczenie rozwijające elastyczne myślenie i szukanie nowych rozwiązań.",
 		instruction: "Wybierz zwykły przedmiot i wymyśl dla niego trzy zupełnie nowe zastosowania. Nie oceniaj pomysłów w trakcie.",
 		question: "Na koniec zapytaj: który pomysł najbardziej Cię zaskoczył?",
 	},
@@ -177,9 +177,30 @@ const practices = [
 		color: "red",
 		meta: "Motywacja / 1 minuta",
 		title: "Pierwszy mały krok",
-		lead: "Kiedy trudno zacząć, choć wiadomo już, co jest do zrobienia.",
+		lead: "Ćwiczenie pomagające przejść od myślenia do działania.",
 		instruction: "Przez dziesięć sekund poruszaj całym ciałem, zatrzymaj się i nazwij najmniejszy możliwy krok, który możesz zrobić teraz.",
 		question: "Nie planuj całości. Zrób tylko ten jeden krok.",
+	},
+];
+
+const testimonials = [
+	{
+		color: "blue",
+		group: "Rodzice",
+		context: "Warsztaty mindcolor®",
+		placeholder: "Wkrótce opublikujemy tu autentyczną opinię rodzica po warsztacie mindcolor®.",
+	},
+	{
+		color: "green",
+		group: "Trenerzy",
+		context: "Praca z zespołem",
+		placeholder: "Wkrótce pojawi się tu głos trenera pracującego z metodą mindcolor®.",
+	},
+	{
+		color: "yellow",
+		group: "Specjaliści",
+		context: "Szkolenia i konsultacje",
+		placeholder: "Wkrótce dodamy tu opinię o praktycznym zastosowaniu metody w codziennej pracy.",
 	},
 ];
 
@@ -261,6 +282,7 @@ export default function Home() {
 		{ href: "#metoda", label: "Metoda" },
 		{ href: "#jak-dziala", label: "Proces" },
 		{ href: "#oferta", label: "Oferta" },
+		{ href: "#opinie", label: "Opinie" },
 		{ href: "#o-nas", label: "O nas" },
 		{ href: "#kontakt", label: "Kontakt" },
 	];
@@ -451,7 +473,7 @@ export default function Home() {
 							<p className="large-copy">Dzieci nie rozwijają koncentracji, spokoju czy odwagi tylko dlatego, że ktoś im o nich opowiada.</p>
 							<p>
 								Potrzebują sytuacji, w której mogą dany stan rozpoznać, przeżyć, nazwać i zapamiętać. Karty, ćwiczenia, pytania, aktywności i bransoletki
-								pomagają takie doświadczenie stworzyć - i wrócić do niego wtedy, kiedy jest najbardziej potrzebne.
+								pomagają takie doświadczenie stworzyć. Później ułatwiają powrót do niego wtedy, kiedy jest najbardziej potrzebne.
 							</p>
 							<div className="system-principles">
 								<div>
@@ -472,13 +494,13 @@ export default function Home() {
 							<motion.figure className="system-figure" whileHover={reduceMotion ? undefined : { y: -6 }}>
 								<div className="system-image-frame">
 									<Image
-										src="/images/photo1.jpg"
-										alt="Dziecko pokazujące karty mindcolor podczas wspólnego doświadczenia"
+										src="/images/training-moment.jpg"
+										alt="Uczestnicy ćwiczenia mindcolor pracujący z kartą i kolorowymi bransoletkami"
 										fill
 										sizes="(max-width: 860px) calc(100vw - 40px), 52vw"
 									/>
 								</div>
-								<figcaption>Narzędzia otwierają doświadczenie - nie zastępują go.</figcaption>
+								<figcaption>Narzędzia otwierają doświadczenie. Nie zastępują go.</figcaption>
 							</motion.figure>
 							<motion.figure
 								className="system-detail-figure"
@@ -486,7 +508,7 @@ export default function Home() {
 								viewport={{ once: true, amount: 0.4 }}
 								whileInView={{ opacity: 1, rotate: 2, scale: 1 }}
 							>
-								<Image src="/images/photo3.jpg" alt="Karty i kolorowe bransoletki mindcolor używane podczas ćwiczenia" fill sizes="220px" />
+								<Image src="/images/cards-in-action.jpg" alt="Karty mindcolor używane podczas wspólnego ćwiczenia" fill sizes="220px" />
 							</motion.figure>
 						</div>
 					</div>
@@ -572,11 +594,8 @@ export default function Home() {
 						))}
 					</div>
 					<motion.div className="anchor-callout" whileHover={reduceMotion ? undefined : { y: -5 }}>
-						<div className="anchor-bracelets" aria-hidden="true">
-							<span className="bracelet bracelet-blue" />
-							<span className="bracelet bracelet-green" />
-							<span className="bracelet bracelet-yellow" />
-							<span className="bracelet bracelet-red" />
+						<div className="anchor-media">
+							<Image src="/images/training-moment.jpg" alt="Karta mindcolor i kolorowe bransoletki podczas ćwiczenia" fill sizes="250px" />
 						</div>
 						<div className="anchor-copy">
 							<span>Doświadczenie w działaniu</span>
@@ -656,6 +675,9 @@ export default function Home() {
 				</RevealSection>
 
 				<RevealSection className="manifest section-spacing" amount={0.2}>
+					<div aria-hidden="true" className="manifest-backdrop">
+						<Image src="/images/pohto2.jpg" alt="" fill sizes="100vw" />
+					</div>
 					<div className="manifest-inner section-shell">
 						<p className="eyebrow eyebrow-light">W co wierzymy</p>
 						<div className="manifest-lines">
@@ -687,7 +709,7 @@ export default function Home() {
 					<div className="section-intro section-intro-split">
 						<div>
 							<p className="eyebrow">Oferta</p>
-							<h2>Wybierz formę, która pasuje do Twojej sytuacji.</h2>
+							<h2>Rozwijamy kompetencje mentalne dzieci i młodzieży – wybierz formę współpracy.</h2>
 						</div>
 						<p>Nie każda grupa potrzebuje tego samego. Zaczynamy od rozmowy i dobieramy format do wieku, miejsca, celu oraz czasu.</p>
 					</div>
@@ -798,12 +820,12 @@ export default function Home() {
 					<div className="section-shell tools-grid">
 						<motion.figure className="tools-image" whileHover={reduceMotion ? undefined : { scale: 1.012 }}>
 							<Image
-								src="/images/sklep.jpg"
-								alt="Przestrzeń prezentująca narzędzia mindcolor w czterech kolorach"
+								src="/images/strefa-in-action.jpg"
+								alt="Prowadząca pracująca z kartami w strefie mindcolor"
 								fill
 								sizes="(max-width: 860px) calc(100vw - 40px), 56vw"
 							/>
-							<figcaption>Narzędzia i kolejne formaty mindcolor® są w przygotowaniu.</figcaption>
+							<figcaption>Strefa mindcolor® podczas wydarzenia.</figcaption>
 						</motion.figure>
 						<div className="tools-copy">
 							<p className="eyebrow">Narzędzia mindcolor®</p>
@@ -884,11 +906,45 @@ export default function Home() {
 					</div>
 				</RevealSection>
 
+				<RevealSection className="testimonials section-spacing" id="opinie">
+					<div className="section-shell">
+						<div className="testimonials-heading">
+							<div>
+								<p className="eyebrow">Opinie</p>
+								<h2>Najlepiej opowiadają o tym osoby, które tego doświadczyły.</h2>
+							</div>
+							<p>Wkrótce pojawią się tutaj głosy rodziców, trenerów i specjalistów, którzy pracowali z metodą mindcolor®.</p>
+						</div>
+						<div className="testimonials-grid">
+							{testimonials.map((testimonial, index) => (
+								<motion.article
+									className={`testimonial-card testimonial-${testimonial.color}`}
+									initial={reduceMotion ? false : "hidden"}
+									key={testimonial.group}
+									transition={{ delay: index * 0.08, duration: 0.72, ease: easeOut }}
+									variants={cardVariants}
+									viewport={{ once: true, amount: 0.2 }}
+									whileHover={reduceMotion ? undefined : { y: -8 }}
+									whileInView="visible"
+								>
+									<span aria-hidden="true" className="testimonial-quote">“</span>
+									<p>{testimonial.placeholder}</p>
+									<footer>
+										<strong>{testimonial.group}</strong>
+										<span>{testimonial.context}</span>
+									</footer>
+								</motion.article>
+							))}
+						</div>
+						<p className="testimonials-note">Publikujemy wyłącznie autentyczne wypowiedzi za zgodą ich autorów.</p>
+					</div>
+				</RevealSection>
+
 				<RevealSection className="about section-spacing" id="o-nas">
 					<div className="section-shell about-grid">
 						<div className="about-copy">
 							<p className="eyebrow">O nas</p>
-							<h2>Powstało z praktyki - nie z teorii zamkniętej w podręczniku.</h2>
+							<h2>Powstało z praktyki, nie z teorii zamkniętej w podręczniku.</h2>
 							<p className="large-copy">
 								Pomysł zaczął się od obserwacji dzieci i rozmów z rodzicami. Pierwsze ćwiczenia testowałyśmy w małych grupach, na warsztatach i zajęciach ruchowych.
 							</p>
@@ -909,12 +965,12 @@ export default function Home() {
 								whileHover={reduceMotion ? undefined : { rotate: -1, y: -7 }}
 								whileInView={{ opacity: 1, rotate: -1, y: 0 }}
 							>
-								<div className="founder-photo founder-photo-blue">
+								<div className="founder-photo">
 									<Image
-										src="/images/kasia.JPG"
+										src="/images/kasia-new.jpg"
 										alt="Katarzyna Gawin-Lelonek"
-										width={560}
-										height={560}
+										width={1166}
+										height={1440}
 										sizes="(max-width: 620px) 72vw, 260px"
 									/>
 								</div>
@@ -931,7 +987,7 @@ export default function Home() {
 								whileHover={reduceMotion ? undefined : { rotate: 1, y: -7 }}
 								whileInView={{ opacity: 1, rotate: 1, y: 0 }}
 							>
-								<div className="founder-photo founder-photo-red">
+								<div className="founder-photo">
 									<Image
 										src="/images/Krystyna.JPG"
 										alt="Krystyna Świderska-Bem"
@@ -954,7 +1010,7 @@ export default function Home() {
 						<div className="contact-copy">
 							<p className="eyebrow eyebrow-light">Kontakt</p>
 							<h2>Powiedz nam, czego potrzebujesz. Zaczniemy od rozmowy.</h2>
-							<p>Warsztat, strefa na wydarzeniu, konsultacja, szkolenie czy mindcolor PRO? Napisz kilka zdań - wrócimy z właściwym kolejnym krokiem.</p>
+								<p>Warsztat, strefa na wydarzeniu, konsultacja, szkolenie czy mindcolor PRO? Napisz kilka zdań. Wrócimy z właściwym kolejnym krokiem.</p>
 							<div className="contact-direct">
 								<span>E-mail</span>
 								<a href="mailto:kontakt@mindcolor.pl">kontakt@mindcolor.pl</a>
