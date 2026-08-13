@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import testimonialEntries from "@/data/testimonials.json";
 import ContactForm from "./contact-form";
 import {
@@ -250,6 +250,8 @@ function RevealSection({ children, className, id, amount = 0.12 }: { children: R
 export default function Home() {
 	const reduceMotion = useReducedMotion();
 	const heroRef = useRef<HTMLElement>(null);
+	const mobileNavRef = useRef<HTMLDivElement>(null);
+	const mobileNavToggleRef = useRef<HTMLButtonElement>(null);
 	const testimonialsTrackRef = useRef<HTMLDivElement>(null);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [openOffer, setOpenOffer] = useState<string | null>(null);
@@ -261,6 +263,33 @@ export default function Home() {
 	});
 	const heroMediaY = useTransform(heroProgress, [0, 1], [0, -54]);
 	const heroCopyY = useTransform(heroProgress, [0, 1], [0, 22]);
+
+	useEffect(() => {
+		if (!menuOpen) return;
+
+		const closeMenu = (returnFocus = false) => {
+			setMenuOpen(false);
+
+			if (returnFocus) {
+				window.requestAnimationFrame(() => mobileNavToggleRef.current?.focus());
+			}
+		};
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") closeMenu(true);
+		};
+		const handlePointerDown = (event: PointerEvent) => {
+			if (event.target instanceof Node && !mobileNavRef.current?.contains(event.target)) closeMenu();
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		document.addEventListener("pointerdown", handlePointerDown);
+
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+			document.removeEventListener("pointerdown", handlePointerDown);
+		};
+	}, [menuOpen]);
+
 	const scrollTestimonials = (direction: -1 | 1) => {
 		const track = testimonialsTrackRef.current;
 
@@ -306,12 +335,14 @@ export default function Home() {
 				<a className="nav-cta" href="#kontakt">
 					Porozmawiajmy <ArrowIcon />
 				</a>
-				<div className="mobile-nav">
+				<div className="mobile-nav" ref={mobileNavRef}>
 					<button
+						aria-controls="mobile-navigation"
 						aria-expanded={menuOpen}
 						aria-label={menuOpen ? "Zamknij menu" : "Otwórz menu"}
 						className="mobile-nav-toggle"
 						onClick={() => setMenuOpen((current) => !current)}
+						ref={mobileNavToggleRef}
 						type="button"
 					>
 						<span>Menu</span>
@@ -319,10 +350,10 @@ export default function Home() {
 							<motion.span
 								animate={{ opacity: 1, rotate: 0, scale: 1 }}
 								className="mobile-nav-icon"
-								exit={{ opacity: 0, rotate: menuOpen ? -45 : 45, scale: 0.75 }}
-								initial={{ opacity: 0, rotate: menuOpen ? 45 : -45, scale: 0.75 }}
+								exit={reduceMotion ? { opacity: 0 } : { opacity: 0, rotate: menuOpen ? -45 : 45, scale: 0.75 }}
+								initial={reduceMotion ? { opacity: 0 } : { opacity: 0, rotate: menuOpen ? 45 : -45, scale: 0.75 }}
 								key={menuOpen ? "close" : "menu"}
-								transition={{ duration: 0.18, ease: easeOut }}
+								transition={{ duration: reduceMotion ? 0 : 0.18, ease: easeOut }}
 							>
 								{menuOpen ? <CloseIcon /> : <MenuIcon />}
 							</motion.span>
@@ -334,9 +365,10 @@ export default function Home() {
 								animate={{ opacity: 1, scale: 1, y: 0 }}
 								aria-label="Nawigacja mobilna"
 								className="mobile-nav-panel"
-								exit={{ opacity: 0, scale: 0.97, y: -8 }}
-								initial={{ opacity: 0, scale: 0.97, y: -8 }}
-								transition={{ duration: 0.24, ease: easeOut }}
+								exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: -8 }}
+								id="mobile-navigation"
+								initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97, y: -8 }}
+								transition={{ duration: reduceMotion ? 0 : 0.24, ease: easeOut }}
 							>
 								<a href="#metoda" onClick={() => setMenuOpen(false)}>
 									Metoda
@@ -461,12 +493,12 @@ export default function Home() {
 				</section>
 
 				<RevealSection className="system section-shell section-spacing" id="metoda">
-					<div className="section-intro">
-						<p className="eyebrow">Czym jest mindcolor®?</p>
-						<h2>To nie są tylko karty. To kompletny system.</h2>
-					</div>
 					<div className="system-grid">
 						<div className="system-copy">
+							<div className="section-intro system-heading">
+								<p className="eyebrow">Czym jest mindcolor®?</p>
+								<h2>To nie są tylko karty. To kompletny system.</h2>
+							</div>
 							<p className="large-copy">Dzieci nie rozwijają koncentracji, spokoju czy odwagi tylko dlatego, że ktoś im o nich opowiada.</p>
 							<p>
 								Potrzebują sytuacji, w której mogą dany stan rozpoznać, przeżyć, nazwać i zapamiętać. Karty, ćwiczenia, pytania, aktywności i bransoletki
@@ -498,14 +530,6 @@ export default function Home() {
 									/>
 								</div>
 								<figcaption>Narzędzia otwierają doświadczenie. Nie zastępują go.</figcaption>
-							</motion.figure>
-							<motion.figure
-								className="system-detail-figure"
-								initial={reduceMotion ? false : { opacity: 0, rotate: 4, scale: 0.94 }}
-								viewport={{ once: true, amount: 0.4 }}
-								whileInView={{ opacity: 1, rotate: 2, scale: 1 }}
-							>
-								<Image src="/images/cards-table.jpg" alt="Karty i kolorowe bransoletki mindcolor podczas ćwiczenia" fill sizes="220px" />
 							</motion.figure>
 						</div>
 					</div>
@@ -736,19 +760,19 @@ export default function Home() {
 										<small>{offer.audience}</small>
 									</span>
 									<span className="offer-lead">{offer.lead}</span>
-									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="offer-toggle" transition={{ duration: 0.28, ease: easeOut }}>
+									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="offer-toggle" transition={{ duration: reduceMotion ? 0 : 0.28, ease: easeOut }}>
 										<PlusIcon />
 									</motion.span>
 								</button>
 								<AnimatePresence initial={false}>
-									{isOpen && (
-										<motion.div
-											animate={{ height: "auto", opacity: 1 }}
-											className="offer-details-shell"
-											exit={{ height: 0, opacity: 0 }}
-											id={`offer-${offer.number}`}
-											initial={{ height: 0, opacity: 0 }}
-											transition={{ duration: 0.38, ease: easeOut }}
+								{isOpen && (
+									<motion.div
+										animate={{ height: "auto", opacity: 1 }}
+										className="offer-details-shell"
+										exit={{ height: 0, opacity: 0 }}
+										id={`offer-${offer.number}`}
+										initial={{ height: 0, opacity: 0 }}
+										transition={{ duration: reduceMotion ? 0 : 0.38, ease: easeOut }}
 										>
 											<div className="offer-details">
 												<p>{offer.details}</p>
@@ -875,20 +899,20 @@ export default function Home() {
 									<span>{practice.meta}</span>
 									<h3>{practice.title}</h3>
 									<p>{practice.lead}</p>
-									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="inspiration-toggle" transition={{ duration: 0.28, ease: easeOut }}>
+									<motion.span animate={{ rotate: isOpen ? 45 : 0 }} className="inspiration-toggle" transition={{ duration: reduceMotion ? 0 : 0.28, ease: easeOut }}>
 										<PlusIcon />
 									</motion.span>
 									<small>{isOpen ? "Zamknij ćwiczenie" : "Otwórz ćwiczenie"}</small>
 								</button>
 								<AnimatePresence initial={false}>
-									{isOpen && (
-										<motion.div
-											animate={{ height: "auto", opacity: 1 }}
-											className="inspiration-details-shell"
-											exit={{ height: 0, opacity: 0 }}
-											id={`practice-${practice.color}`}
-											initial={{ height: 0, opacity: 0 }}
-											transition={{ duration: 0.4, ease: easeOut }}
+								{isOpen && (
+									<motion.div
+										animate={{ height: "auto", opacity: 1 }}
+										className="inspiration-details-shell"
+										exit={{ height: 0, opacity: 0 }}
+										id={`practice-${practice.color}`}
+										initial={{ height: 0, opacity: 0 }}
+										transition={{ duration: reduceMotion ? 0 : 0.4, ease: easeOut }}
 										>
 											<div className="inspiration-details">
 												<p>{practice.instruction}</p>
@@ -968,18 +992,24 @@ export default function Home() {
 								Stworzyłyśmy mindcolor®, bo samo „skup się”, „uspokój się” czy „uwierz w siebie” nie wystarcza. Dziecko potrzebuje przestrzeni, by dany stan
 								naprawdę poczuć i nauczyć się do niego wracać.
 							</p>
-							<a className="text-link" href="https://zycieregionu.com.pl/2026/06/01/mindcolor-ster-emocji/" target="_blank" rel="noreferrer">
+							<a
+								aria-label="Poznaj historię mindcolor® (otwiera się w nowej karcie)"
+								className="text-link"
+								href="https://zycieregionu.com.pl/2026/06/01/mindcolor-ster-emocji/"
+								rel="noreferrer"
+								target="_blank"
+							>
 								Poznaj historię mindcolor® <ArrowIcon />
 							</a>
 						</div>
 						<div className="founder-portraits" aria-label="Twórczynie mindcolor">
 							<motion.figure
 								className="founder-card"
-								initial={reduceMotion ? false : { opacity: 0, rotate: -2.5, y: 28 }}
+								initial={reduceMotion ? false : { opacity: 0, y: 28 }}
 								transition={{ duration: 0.75, ease: easeOut }}
 								viewport={{ once: true, amount: 0.25 }}
-								whileHover={reduceMotion ? undefined : { rotate: -1, y: -7 }}
-								whileInView={{ opacity: 1, rotate: -1, y: 0 }}
+								whileHover={reduceMotion ? undefined : { y: -7 }}
+								whileInView={{ opacity: 1, y: 0 }}
 							>
 								<div className="founder-photo">
 									<Image
@@ -996,12 +1026,12 @@ export default function Home() {
 								</figcaption>
 							</motion.figure>
 							<motion.figure
-								className="founder-card founder-card-offset"
-								initial={reduceMotion ? false : { opacity: 0, rotate: 2.5, y: 34 }}
+								className="founder-card"
+								initial={reduceMotion ? false : { opacity: 0, y: 28 }}
 								transition={{ delay: 0.1, duration: 0.75, ease: easeOut }}
 								viewport={{ once: true, amount: 0.25 }}
-								whileHover={reduceMotion ? undefined : { rotate: 1, y: -7 }}
-								whileInView={{ opacity: 1, rotate: 1, y: 0 }}
+								whileHover={reduceMotion ? undefined : { y: -7 }}
+								whileInView={{ opacity: 1, y: 0 }}
 							>
 								<div className="founder-photo">
 									<Image

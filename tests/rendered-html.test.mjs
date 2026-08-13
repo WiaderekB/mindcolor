@@ -27,7 +27,7 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /hero-strefa\.jpg/);
   assert.match(source, /group-card-session\.jpg/);
   assert.match(source, /bracelet-session\.jpg/);
-  assert.match(source, /cards-table\.jpg/);
+  assert.doesNotMatch(source, /cards-table\.jpg/);
   assert.match(source, /tools-studio\.jpg/);
   assert.match(source, /mental-training-lights\.jpg/);
   assert.match(source, /logo-on-dark\.png/);
@@ -110,6 +110,35 @@ test("builds a complete contact email from the form", async () => {
   assert.match(source, /encodeURIComponent\(subject\)/);
   assert.match(source, /encodeURIComponent\(body\)/);
   assert.match(source, /mailto:kontakt@mindcolor\.pl/);
+  assert.match(source, /noValidate/);
+  assert.match(source, /aria-invalid/);
+  assert.match(source, /Wszystkie pola są wymagane/);
+  assert.match(source, /Wpisz poprawny adres e-mail/);
+});
+
+test("supports dismissible mobile navigation and accessibility preferences", async () => {
+  const [page, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(page, /aria-controls="mobile-navigation"/);
+  assert.match(page, /event\.key === "Escape"/);
+  assert.match(page, /mobileNavToggleRef\.current\?\.focus/);
+  assert.match(css, /prefers-reduced-transparency/);
+  assert.match(css, /prefers-contrast: more/);
+});
+
+test("publishes crawler metadata routes", async () => {
+  const [robots, sitemap] = await Promise.all([
+    readFile(new URL("../app/robots.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/sitemap.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(robots, /sitemap\.xml/);
+  assert.match(robots, /userAgent: "\*"/);
+  assert.match(sitemap, /changeFrequency: "monthly"/);
+  assert.match(sitemap, /priority: 1/);
 });
 
 test("uses the standard Next.js lifecycle", async () => {
