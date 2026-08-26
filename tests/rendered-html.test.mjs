@@ -24,6 +24,8 @@ test("contains the finished mindcolor homepage", async () => {
   assert.doesNotMatch(source, /name: "Energia"/);
   assert.match(source, /kasia-new\.jpg/);
   assert.match(source, /Krystyna\.JPG/);
+  assert.match(source, /href="tel:\+48507467750"/);
+  assert.match(source, /href="tel:\+48515036895"/);
   assert.match(source, /hero-strefa\.jpg/);
   assert.match(source, /group-card-session\.jpg/);
   assert.match(source, /bracelet-session\.jpg/);

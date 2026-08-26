@@ -1023,6 +1023,9 @@ export default function Home() {
 								<figcaption>
 									<strong>Katarzyna Gawin-Lelonek</strong>
 									<span>trenerka mentalna w sporcie, pedagożka, konsultantka odporności psychicznej</span>
+									<a aria-label="Zadzwoń do Katarzyny Gawin-Lelonek" className="founder-card-phone" href="tel:+48507467750">
+										+48 507 467 750
+									</a>
 								</figcaption>
 							</motion.figure>
 							<motion.figure
@@ -1045,6 +1048,9 @@ export default function Home() {
 								<figcaption>
 									<strong>Krystyna Świderska-Bem</strong>
 									<span>trenerka mentalna w sporcie</span>
+									<a aria-label="Zadzwoń do Krystyny Świderskiej-Bem" className="founder-card-phone" href="tel:+48515036895">
+										+48 515 036 895
+									</a>
 								</figcaption>
 							</motion.figure>
 						</div>
