@@ -199,6 +199,31 @@ function ArrowIcon() {
 	return <ArrowUpRightIcon className="inline-icon" />;
 }
 
+function NaffyStoreCard() {
+	return (
+		<a className="naffy-store-card" href="https://www.naffy.io/mindcolor" rel="noopener noreferrer" target="_blank">
+			<span className="naffy-store-meta">
+				<span aria-hidden="true" className="naffy-store-dots">
+					<span className="dot dot-green" />
+					<span className="dot dot-yellow" />
+					<span className="dot dot-red" />
+					<span className="dot dot-blue" />
+				</span>
+				<span className="naffy-store-platform">naffy</span>
+			</span>
+			<span className="naffy-store-content">
+				<span>Sklep online</span>
+				<strong>Odkryj narzędzia mindcolor®</strong>
+				<small>Zobacz aktualną ofertę mindcolor® w jednym miejscu.</small>
+			</span>
+			<span className="naffy-store-cta">
+				Przejdź do sklepu <ArrowIcon />
+			</span>
+			<span className="sr-only">Link otwiera się w nowej karcie.</span>
+		</a>
+	);
+}
+
 function StateGlyph({ name }: { name: string }) {
 	const props = { className: "state-icon-svg" };
 
@@ -305,6 +330,7 @@ export default function Home() {
 		{ href: "#metoda", label: "Metoda" },
 		{ href: "#jak-dziala", label: "Proces" },
 		{ href: "#oferta", label: "Oferta" },
+		{ href: "#sklep", label: "Sklep" },
 		{ href: "#opinie", label: "Opinie" },
 		{ href: "#o-nas", label: "O nas" },
 		{ href: "#kontakt", label: "Kontakt" },
@@ -330,6 +356,7 @@ export default function Home() {
 					<a href="#metoda">Metoda</a>
 					<a href="#jak-dziala">Jak działa</a>
 					<a href="#oferta">Oferta</a>
+					<a href="#sklep">Sklep</a>
 					<a href="#o-nas">O nas</a>
 				</nav>
 				<a className="nav-cta" href="#kontakt">
@@ -376,9 +403,12 @@ export default function Home() {
 								<a href="#jak-dziala" onClick={() => setMenuOpen(false)}>
 									Jak działa
 								</a>
-								<a href="#oferta" onClick={() => setMenuOpen(false)}>
-									Oferta
-								</a>
+									<a href="#oferta" onClick={() => setMenuOpen(false)}>
+										Oferta
+									</a>
+									<a href="#sklep" onClick={() => setMenuOpen(false)}>
+										Sklep
+									</a>
 								<a href="#opinie" onClick={() => setMenuOpen(false)}>
 									Opinie
 								</a>
@@ -446,7 +476,14 @@ export default function Home() {
 						transition={{ delay: 0.18, duration: 1.05, ease: easeOut }}
 					>
 						<motion.div className="hero-frame" whileHover={reduceMotion ? undefined : { scale: 1.008 }}>
-							<Image src="/images/hero-strefa.jpg" alt="Strefa mindcolor z czterema kolorowymi obszarami doświadczeń" width={1536} height={2048} priority />
+							<Image
+								src="/images/mindcolor-cards-naffy.jpg"
+								alt="Dłonie wybierające kartę mindcolor® obok kolorowych bransoletek"
+								height={1254}
+								priority
+								sizes="(max-width: 860px) calc(100vw - 40px), 42vw"
+								width={1254}
+							/>
 						</motion.div>
 						<motion.div
 							animate={reduceMotion ? undefined : { y: [0, -7, 0] }}
@@ -837,7 +874,7 @@ export default function Home() {
 					</div>
 				</RevealSection>
 
-				<RevealSection className="tools-section section-spacing">
+				<RevealSection className="tools-section section-spacing" id="sklep">
 					<div className="section-shell tools-grid">
 						<motion.figure className="tools-image" whileHover={reduceMotion ? undefined : { scale: 1.012 }}>
 							<Image
@@ -858,10 +895,7 @@ export default function Home() {
 								<span>Personalizowane zestawy</span>
 								<span>Materiały dodatkowe</span>
 							</div>
-							<div className="coming-link" aria-label="Sklep na Naffy w przygotowaniu">
-								<span>Sklep na Naffy</span>
-								<small>w przygotowaniu</small>
-							</div>
+							<NaffyStoreCard />
 						</div>
 					</div>
 				</RevealSection>

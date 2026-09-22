@@ -26,7 +26,10 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /Krystyna\.JPG/);
   assert.match(source, /href="tel:\+48507467750"/);
   assert.match(source, /href="tel:\+48515036895"/);
-  assert.match(source, /hero-strefa\.jpg/);
+  assert.match(source, /mindcolor-cards-naffy\.jpg/);
+  assert.match(source, /href="https:\/\/www\.naffy\.io\/mindcolor"/);
+  assert.match(source, /Odkryj narzędzia mindcolor®/);
+  assert.doesNotMatch(source, /Sklep na Naffy[\s\S]*w przygotowaniu/);
   assert.match(source, /group-card-session\.jpg/);
   assert.match(source, /bracelet-session\.jpg/);
   assert.doesNotMatch(source, /cards-table\.jpg/);
@@ -63,6 +66,7 @@ test("uses only the supplied brand photography and logo", async () => {
   const files = await readdir(new URL("../public/images/", import.meta.url));
 
   for (const file of [
+    "mindcolor-cards-naffy.jpg",
     "hero-strefa.jpg",
     "group-card-session.jpg",
     "bracelet-session.jpg",

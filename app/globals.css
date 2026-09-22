@@ -92,6 +92,19 @@ textarea:focus-visible {
   transform: translateY(0);
 }
 
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .page-progress {
   position: fixed;
   top: 0;
@@ -460,7 +473,8 @@ textarea:focus-visible {
 .hero-frame {
   position: relative;
   overflow: hidden;
-  min-height: min(72vh, 720px);
+  min-height: 0;
+  aspect-ratio: 1;
   border-radius: 180px 28px 28px 28px;
   background: var(--soft);
   box-shadow: var(--shadow);
@@ -476,11 +490,11 @@ textarea:focus-visible {
 .hero-frame img {
   width: 100%;
   height: 100%;
-  min-height: min(72vh, 720px);
+  min-height: 0;
   object-fit: cover;
-  object-position: center 18%;
-  transform: scale(1.13);
-  transform-origin: center 18%;
+  object-position: center;
+  transform: scale(1.01);
+  transform-origin: center;
 }
 
 .hero-note {
@@ -1433,28 +1447,110 @@ textarea:focus-visible {
   background: var(--red);
 }
 
-.coming-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 15px;
+.naffy-store-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  overflow: hidden;
+  gap: 22px;
   margin-top: 46px;
-  padding: 13px 17px;
-  border: 1px solid #c8cacd;
-  border-radius: 999px;
+  padding: 25px 26px 22px;
+  border: 1px solid rgba(16, 17, 20, 0.12);
+  border-radius: var(--radius-md);
   background: white;
+  box-shadow: 0 16px 45px rgba(17, 20, 24, 0.07);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
-.coming-link span {
+.naffy-store-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green) 0 25%, var(--yellow) 25% 50%, var(--red) 50% 75%, var(--blue) 75%);
+  content: "";
+}
+
+.naffy-store-card:hover {
+  border-color: rgba(16, 17, 20, 0.22);
+  box-shadow: 0 24px 58px rgba(17, 20, 24, 0.12);
+  transform: translateY(-4px);
+}
+
+.naffy-store-meta,
+.naffy-store-dots,
+.naffy-store-cta {
+  display: flex;
+  align-items: center;
+}
+
+.naffy-store-meta {
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.naffy-store-dots {
+  gap: 5px;
+}
+
+.naffy-store-dots .dot {
+  width: 8px;
+  height: 8px;
+}
+
+.naffy-store-platform {
+  color: #797d84;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.naffy-store-content {
+  display: grid;
+  gap: 7px;
+}
+
+.naffy-store-content > span {
+  color: #6b6f76;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.naffy-store-content strong {
+  max-width: 420px;
+  font-size: clamp(21px, 2vw, 29px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.16;
+}
+
+.naffy-store-content small {
+  max-width: 430px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.naffy-store-cta {
+  justify-content: space-between;
+  min-height: 48px;
+  padding-top: 17px;
+  border-top: 1px solid var(--line);
   font-size: 12px;
   font-weight: 700;
 }
 
-.coming-link small {
-  color: #8a8e94;
-  font-size: 9px;
-  font-weight: 650;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.naffy-store-cta .inline-icon {
+  transition: transform 180ms ease;
+}
+
+.naffy-store-card:hover .naffy-store-cta .inline-icon {
+  transform: translate(3px, -3px);
 }
 
 .inspiration-grid {
@@ -2090,7 +2186,7 @@ textarea:focus-visible {
 
   .hero-frame,
   .hero-frame img {
-    min-height: 600px;
+    min-height: 0;
   }
 
   .states-grid {
@@ -2217,7 +2313,7 @@ textarea:focus-visible {
 
   .hero-frame,
   .hero-frame img {
-    min-height: 680px;
+    min-height: 0;
   }
 
   .statement-track {
@@ -2357,14 +2453,14 @@ textarea:focus-visible {
   }
 
   .hero-frame {
-    min-height: 430px;
+    min-height: 0;
     border-radius: 98px 20px 20px 20px;
   }
 
   .hero-frame img {
-    min-height: 430px;
-    object-position: center 20%;
-    transform: scale(1.08);
+    min-height: 0;
+    object-position: center;
+    transform: scale(1);
   }
 
   .hero-note {
