@@ -28,6 +28,12 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /href="tel:\+48515036895"/);
   assert.match(source, /mindcolor-cards-naffy\.jpg/);
   assert.match(source, /href="https:\/\/www\.naffy\.io\/mindcolor"/);
+  assert.ok(
+    (source.match(/href="https:\/\/www\.naffy\.io\/mindcolor"/g) ?? []).length >= 3,
+    "Expected direct Naffy links in the announcement, navigation, and store card",
+  );
+  assert.match(source, /Tu kupisz karty mindcolor®/);
+  assert.match(source, /shop-announcement-signal/);
   assert.match(source, /Odkryj narzędzia mindcolor®/);
   assert.doesNotMatch(source, /Sklep na Naffy[\s\S]*w przygotowaniu/);
   assert.match(source, /group-card-session\.jpg/);

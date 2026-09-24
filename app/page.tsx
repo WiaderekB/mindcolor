@@ -199,6 +199,38 @@ function ArrowIcon() {
 	return <ArrowUpRightIcon className="inline-icon" />;
 }
 
+function ShopAnnouncement({ reduceMotion }: { reduceMotion: boolean | null }) {
+	return (
+		<div className="shop-announcement-shell section-shell">
+			<motion.a
+				className="shop-announcement"
+				href="https://www.naffy.io/mindcolor"
+				rel="noopener noreferrer"
+				target="_blank"
+				whileHover={reduceMotion ? undefined : { scale: 1.008, y: -2 }}
+				whileTap={reduceMotion ? undefined : { scale: 0.992 }}
+			>
+				<span className="shop-announcement-message">
+					<motion.span
+						animate={reduceMotion ? undefined : { opacity: [1, 0.42, 1], scale: [1, 1.2, 1] }}
+						aria-hidden="true"
+						className="shop-announcement-signal"
+						transition={{ duration: 1.45, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY }}
+					/>
+					<span>
+						<small>Sklep online</small>
+						<strong>Tu kupisz karty mindcolor®</strong>
+					</span>
+				</span>
+				<span className="shop-announcement-action">
+					Przejdź do sklepu <ArrowIcon />
+				</span>
+				<span className="sr-only">Link otwiera się w nowej karcie.</span>
+			</motion.a>
+		</div>
+	);
+}
+
 function NaffyStoreCard() {
 	return (
 		<a className="naffy-store-card" href="https://www.naffy.io/mindcolor" rel="noopener noreferrer" target="_blank">
@@ -356,7 +388,10 @@ export default function Home() {
 					<a href="#metoda">Metoda</a>
 					<a href="#jak-dziala">Jak działa</a>
 					<a href="#oferta">Oferta</a>
-					<a href="#sklep">Sklep</a>
+					<a className="desktop-store-link" href="https://www.naffy.io/mindcolor" rel="noopener noreferrer" target="_blank">
+						Sklep <ArrowIcon />
+						<span className="sr-only">Link otwiera się w nowej karcie.</span>
+					</a>
 					<a href="#o-nas">O nas</a>
 				</nav>
 				<a className="nav-cta" href="#kontakt">
@@ -403,12 +438,19 @@ export default function Home() {
 								<a href="#jak-dziala" onClick={() => setMenuOpen(false)}>
 									Jak działa
 								</a>
-									<a href="#oferta" onClick={() => setMenuOpen(false)}>
-										Oferta
-									</a>
-									<a href="#sklep" onClick={() => setMenuOpen(false)}>
-										Sklep
-									</a>
+								<a href="#oferta" onClick={() => setMenuOpen(false)}>
+									Oferta
+								</a>
+								<a
+									className="mobile-store-link"
+									href="https://www.naffy.io/mindcolor"
+									onClick={() => setMenuOpen(false)}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									Kup karty <ArrowIcon />
+									<span className="sr-only">Link otwiera się w nowej karcie.</span>
+								</a>
 								<a href="#opinie" onClick={() => setMenuOpen(false)}>
 									Opinie
 								</a>
@@ -423,6 +465,7 @@ export default function Home() {
 					</AnimatePresence>
 				</div>
 			</motion.header>
+			<ShopAnnouncement reduceMotion={reduceMotion} />
 
 			<nav className="journey-rail" aria-label="Skróty do sekcji">
 				<motion.span aria-hidden="true" className="journey-progress" style={{ scaleY: scrollYProgress }} />
