@@ -13,7 +13,7 @@ test("contains the finished mindcolor homepage", async () => {
   assert.match(source, /Rozpoznaj/);
   assert.match(source, /Doświadcz/);
   assert.match(source, /mindcolor PRO/);
-  assert.match(source, /kontakt@mindcolor\.pl/);
+  assert.match(source, /mindcolor\.pl@gmail\.com/);
   assert.match(source, /Powrót uwagi/);
   assert.match(source, /Trenuje uwagę, ogranicza rozproszenia/);
   assert.match(source, /Rozwijamy kompetencje mentalne dzieci i młodzieży/);
@@ -121,7 +121,7 @@ test("builds a complete contact email from the form", async () => {
   assert.match(source, /event\.preventDefault\(\)/);
   assert.match(source, /encodeURIComponent\(subject\)/);
   assert.match(source, /encodeURIComponent\(body\)/);
-  assert.match(source, /mailto:kontakt@mindcolor\.pl/);
+  assert.match(source, /mailto:mindcolor\.pl@gmail\.com/);
   assert.match(source, /noValidate/);
   assert.match(source, /aria-invalid/);
   assert.match(source, /Wszystkie pola są wymagane/);

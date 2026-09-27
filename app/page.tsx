@@ -1142,7 +1142,7 @@ export default function Home() {
 								<p>Warsztat, strefa na wydarzeniu, konsultacja, szkolenie czy mindcolor PRO? Napisz kilka zdań. Wrócimy z właściwym kolejnym krokiem.</p>
 							<div className="contact-direct">
 								<span>E-mail</span>
-								<a href="mailto:kontakt@mindcolor.pl">kontakt@mindcolor.pl</a>
+								<a href="mailto:mindcolor.pl@gmail.com">mindcolor.pl@gmail.com</a>
 							</div>
 						</div>
 						<ContactForm />

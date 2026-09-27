@@ -60,7 +60,7 @@ export default function ContactForm() {
 		const subject = `mindcolor® - ${topic}`;
 		const body = [`Dzień dobry,`, "", message, "", `Imię: ${name}`, `E-mail zwrotny: ${email}`].join("\n");
 
-		window.location.href = `mailto:kontakt@mindcolor.pl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		window.location.href = `mailto:mindcolor.pl@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 	}
 
 	return (
